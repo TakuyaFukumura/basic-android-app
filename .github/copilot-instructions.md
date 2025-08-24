@@ -1,169 +1,169 @@
 # Basic Android App
-Modern Android application built with Kotlin and Jetpack Compose. This is a basic Android development template repository providing a foundation for Android app development.
+KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。これはAndroidアプリ開発の基盤を提供する基本的なAndroid開発テンプレートリポジトリです。
 
-Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
+常にこれらの手順を最初に参照し、ここの情報と一致しない予期しない情報に遭遇した場合のみ、検索やbashコマンドにフォールバックしてください。
 
-## Working Effectively
+## 効果的な作業方法
 
-### Prerequisites and Setup
-- Java 17 is required (available in this environment)
-- Android SDK is pre-installed at `/usr/local/lib/android/sdk`
-- Android platform-tools and build-tools are available
-- Gradle wrapper is included in the project
+### 前提条件とセットアップ
+- Java 17が必要です（この環境で利用可能）
+- Android SDKは `/usr/local/lib/android/sdk` にプリインストールされています
+- Android platform-toolsとbuild-toolsが利用可能です
+- Gradleラッパーがプロジェクトに含まれています
 
-### Bootstrap and Build Commands
-CRITICAL: Set appropriate timeouts for all Android build commands. Android builds can take significant time, especially on first run.
+### ブートストラップとビルドコマンド
+重要：すべてのAndroidビルドコマンドに適切なタイムアウトを設定してください。Androidビルドは特に初回実行時に大幅な時間がかかる場合があります。
 
-**Initial Setup:**
+**初期設定:**
 ```bash
-# Make gradlew executable (if needed)
+# gradlewを実行可能にする（必要に応じて）
 chmod +x gradlew
 
-# Add Android tools to PATH
+# AndroidツールをPATHに追加
 export PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools
 ```
 
-**Build Commands:**
+**ビルドコマンド:**
 ```bash
-# Clean build (recommended first step)
+# クリーンビルド（推奨される最初のステップ）
 ./gradlew clean
-# Build debug APK - NEVER CANCEL: Can take 15-45 minutes on first build. Set timeout to 60+ minutes.
+# デバッグAPKをビルド - 絶対にキャンセルしないこと：初回ビルドで15-45分かかる可能性があります。タイムアウトを60分以上に設定してください。
 ./gradlew assembleDebug
-# Build release APK - NEVER CANCEL: Can take 20-60 minutes. Set timeout to 90+ minutes.
+# リリースAPKをビルド - 絶対にキャンセルしないこと：20-60分かかる可能性があります。タイムアウトを90分以上に設定してください。
 ./gradlew assembleRelease
 ```
 
-**Test Commands:**
+**テストコマンド:**
 ```bash
-# Run unit tests - NEVER CANCEL: Takes 5-15 minutes. Set timeout to 30+ minutes.
+# ユニットテストを実行 - 絶対にキャンセルしないこと：5-15分かかります。タイムアウトを30分以上に設定してください。
 ./gradlew test
-# Run lint checks - NEVER CANCEL: Takes 10-30 minutes. Set timeout to 45+ minutes.
+# Lintチェックを実行 - 絶対にキャンセルしないこと：10-30分かかります。タイムアウトを45分以上に設定してください。
 ./gradlew lint
-# Check all code quality tools - NEVER CANCEL: Takes 15-45 minutes. Set timeout to 60+ minutes.
+# すべてのコード品質ツールをチェック - 絶対にキャンセルしないこと：15-45分かかります。タイムアウトを60分以上に設定してください。
 ./gradlew check
 ```
 
-**Installation and Running:**
+**インストールと実行:**
 ```bash
-# Install debug APK to connected device/emulator
+# 接続されたデバイス/エミュレーターにデバッグAPKをインストール
 ./gradlew installDebug
-# Uninstall app
+# アプリをアンインストール
 adb uninstall com.example.myapplication
 ```
 
-### Known Issues and Limitations
-**IMPORTANT: Network Access Required**
-- The Android Gradle Plugin version (8.12.1) in `gradle/libs.versions.toml` may not be available in environments with restricted network access
-- If build fails with "Plugin was not found" errors, this indicates network connectivity issues with Google's Maven repository
-- In such cases, consider updating to a more stable AGP version (e.g., 8.1.0 or 7.4.2) in `gradle/libs.versions.toml`
+### 既知の問題と制限事項
+**重要：ネットワークアクセスが必要**
+- `gradle/libs.versions.toml` 内のAndroid Gradle Plugin バージョン (8.12.1) は、ネットワークアクセスが制限された環境では利用できない場合があります
+- ビルドが「Plugin was not found」エラーで失敗する場合、これはGoogleのMavenリポジトリとのネットワーク接続問題を示しています
+- そのような場合は、`gradle/libs.versions.toml` でより安定したAGPバージョン（例：8.1.0 または 7.4.2）への更新を検討してください
 
-**Common Build Issues:**
-- First builds may fail due to missing SDK components - rerun the build command
-- Gradle daemon issues: run `./gradlew --stop` then retry
-- Network timeouts: increase timeout values in `gradle.properties`
-- Memory issues: ensure sufficient heap space (already configured to 2048m)
+**一般的なビルド問題:**
+- 初回ビルドはSDKコンポーネントの不足により失敗することがあります - ビルドコマンドを再実行してください
+- Gradleデーモンの問題：`./gradlew --stop` を実行してから再試行してください
+- ネットワークタイムアウト：`gradle.properties` でタイムアウト値を増加させてください
+- メモリ問題：十分なヒープ空間を確保してください（すでに2048mに設定済み）
 
-**Build Validation Status:**
-- ⚠️  Build commands could not be fully validated due to network restrictions in this environment
-- ✅  Project structure and configuration verified
-- ✅  Android SDK environment confirmed available (Android API 36 target)
-- ✅  Test files and source code verified
-- ✅  Dependencies and versions analyzed
+**ビルド検証ステータス:**
+- ⚠️  この環境でのネットワーク制限により、ビルドコマンドを完全に検証できませんでした
+- ✅  プロジェクト構造と設定が検証されました
+- ✅  Android SDK環境が利用可能であることを確認しました（Android API 36 target）
+- ✅  テストファイルとソースコードが検証されました
+- ✅  依存関係とバージョンが分析されました
 
-## Validation and Testing
+## 検証とテスト
 
-### Manual Validation Requirements
-After making any changes to the application:
+### 手動検証要件
+アプリケーションに変更を加えた後：
 
-1. **Always build the project** to ensure code compiles:
+1. **常にプロジェクトをビルドして** コードがコンパイルされることを確認してください:
    ```bash
    ./gradlew assembleDebug
    ```
 
-2. **Run unit tests** to verify functionality:
+2. **ユニットテストを実行して** 機能を検証してください:
    ```bash
    ./gradlew test
    ```
 
-3. **Run instrumented tests** (requires emulator or device):
+3. **インストルメンテーションテストを実行してください**（エミュレーターまたはデバイスが必要）:
    ```bash
    ./gradlew connectedAndroidTest
    ```
 
-4. **Test user scenarios manually:**
-   - Install the app on device/emulator
-   - Launch the app and verify it displays "Hello Android!" text
-   - Test basic navigation and UI interactions
-   - Verify app doesn't crash during basic usage
+4. **ユーザーシナリオを手動でテストしてください:**
+   - デバイス/エミュレーターにアプリをインストール
+   - アプリを起動し、「Hello Android!」テキストが表示されることを確認
+   - 基本的なナビゲーションとUI操作をテスト
+   - 基本的な使用中にアプリがクラッシュしないことを確認
 
-### Lint and Code Quality
-Always run these before committing changes:
+### LintとコードクオリティA
+変更をコミットする前に、常にこれらを実行してください:
 ```bash
-# Run Android lint
+# Android lintを実行
 ./gradlew lint
-# Run all checks (lint + tests)
+# すべてのチェックを実行（lint + テスト）
 ./gradlew check
 ```
 
-## Project Structure and Navigation
+## プロジェクト構造とナビゲーション
 
-### Key Directories and Files
+### 主要ディレクトリとファイル
 ```
 basic-android-app/
-├── app/                           # Main application module
+├── app/                           # メインアプリケーションモジュール
 │   ├── src/main/
 │   │   ├── java/com/example/myapplication/
-│   │   │   ├── MainActivity.kt    # Main activity with Compose UI
-│   │   │   └── ui/theme/         # Theme configuration
-│   │   ├── res/                  # Android resources
-│   │   └── AndroidManifest.xml   # App manifest
-│   ├── src/test/                 # Unit tests
-│   ├── src/androidTest/          # Instrumented tests
-│   ├── build.gradle.kts          # App-level build configuration
-│   └── proguard-rules.pro        # ProGuard configuration
+│   │   │   ├── MainActivity.kt    # Compose UIを使用するメインアクティビティ
+│   │   │   └── ui/theme/         # テーマ設定
+│   │   ├── res/                  # Androidリソース
+│   │   └── AndroidManifest.xml   # アプリマニフェスト
+│   ├── src/test/                 # ユニットテスト
+│   ├── src/androidTest/          # インストルメンテーションテスト
+│   ├── build.gradle.kts          # アプリレベルのビルド設定
+│   └── proguard-rules.pro        # ProGuard設定
 ├── gradle/
-│   └── libs.versions.toml        # Dependency version catalog
-├── build.gradle.kts              # Project-level build file
-├── settings.gradle.kts           # Gradle settings
-└── gradlew / gradlew.bat         # Gradle wrapper scripts
+│   └── libs.versions.toml        # 依存関係バージョンカタログ
+├── build.gradle.kts              # プロジェクトレベルのビルドファイル
+├── settings.gradle.kts           # Gradle設定
+└── gradlew / gradlew.bat         # Gradleラッパースクリプト
 ```
 
-### Important Files to Monitor
-When making changes, always check these files for impact:
-- `app/src/main/java/com/example/myapplication/MainActivity.kt` - Main app logic
-- `app/build.gradle.kts` - Dependencies and build configuration
-- `gradle/libs.versions.toml` - Version management
-- `app/src/main/AndroidManifest.xml` - App permissions and configuration
+### 監視すべき重要ファイル
+変更を行う際は、これらのファイルが影響を受けるかどうか常に確認してください:
+- `app/src/main/java/com/example/myapplication/MainActivity.kt` - メインアプリロジック
+- `app/build.gradle.kts` - 依存関係とビルド設定
+- `gradle/libs.versions.toml` - バージョン管理
+- `app/src/main/AndroidManifest.xml` - アプリ権限と設定
 
-### Common Development Tasks
+### 一般的な開発タスク
 
-**Adding Dependencies:**
-1. Add to `gradle/libs.versions.toml` in `[libraries]` section
-2. Reference in `app/build.gradle.kts` dependencies block
-3. Sync and build project
+**依存関係の追加:**
+1. `gradle/libs.versions.toml` の `[libraries]` セクションに追加
+2. `app/build.gradle.kts` の依存関係ブロックで参照
+3. プロジェクトを同期してビルド
 
-**Creating New Activities/Screens:**
-1. Create new Kotlin file in `app/src/main/java/com/example/myapplication/`
-2. Add to `AndroidManifest.xml` if it's an Activity
-3. Update navigation or main activity as needed
+**新しいアクティビティ/画面の作成:**
+1. `app/src/main/java/com/example/myapplication/` に新しいKotlinファイルを作成
+2. Activityの場合は `AndroidManifest.xml` に追加
+3. 必要に応じてナビゲーションまたはメインアクティビティを更新
 
-**Modifying UI:**
-1. Edit Compose functions in MainActivity.kt or create new composables
-2. Update theme files in `ui/theme/` if needed
-3. Test on device/emulator immediately
+**UIの変更:**
+1. MainActivity.kt のCompose関数を編集するか、新しいcomposableを作成
+2. 必要に応じて `ui/theme/` のテーマファイルを更新
+3. デバイス/エミュレーターで即座にテスト
 
-## Technology Stack and Current Configuration
-- **Language:** Kotlin 2.0.21
-- **UI Framework:** Jetpack Compose with BOM 2024.09.00
-- **Build System:** Gradle 8.13 with Kotlin DSL
-- **Android Gradle Plugin:** 8.12.1 (may need adjustment for network-restricted environments)
+## 技術スタックと現在の設定
+- **言語:** Kotlin 2.0.21
+- **UIフレームワーク:** Jetpack Compose with BOM 2024.09.00
+- **ビルドシステム:** Gradle 8.13 with Kotlin DSL
+- **Android Gradle Plugin:** 8.12.1 (ネットワーク制限環境では調整が必要な場合があります)
 - **Target SDK:** 36 (Android API level 36)
 - **Min SDK:** 24 (Android 7.0)
-- **Java Compatibility:** Java 17 (available in environment)
-- **Package Name:** com.example.myapplication
-- **Version:** 0.1.0 (versionCode 1)
+- **Java互換性:** Java 17 (環境で利用可能)
+- **パッケージ名:** com.example.myapplication
+- **バージョン:** 0.1.0 (versionCode 1)
 
-### Current Dependencies (from libs.versions.toml)
+### 現在の依存関係 (libs.versions.toml より)
 - androidx-core-ktx: 1.10.1
 - androidx-lifecycle-runtime-ktx: 2.6.1
 - androidx-activity-compose: 1.8.0
@@ -172,56 +172,56 @@ When making changes, always check these files for impact:
 - androidx-junit: 1.1.5
 - androidx-espresso-core: 3.5.1
 
-## Development Workflow
-1. Always pull latest changes before starting work
-2. Make incremental changes and test frequently
-3. Run unit tests after each significant change
-4. Build and install on device/emulator to test UI changes
-5. Run full test suite before committing
-6. Always run lint checks before pushing changes
+## 開発ワークフロー
+1. 作業開始前に常に最新の変更をプル
+2. 段階的な変更を行い、頻繁にテスト
+3. 重要な変更後にユニットテストを実行
+4. UI変更をテストするためにデバイス/エミュレーターでビルドしてインストール
+5. コミット前に完全なテストスイートを実行
+6. 変更をプッシュする前に常にlintチェックを実行
 
-**Remember: Android builds can be time-consuming. Never cancel long-running build operations - they may take 45+ minutes on first run or clean builds.**
+**覚えておいてください：Androidビルドは時間がかかる場合があります。長時間実行されるビルド操作を絶対にキャンセルしないでください - 初回実行やクリーンビルドでは45分以上かかる場合があります。**
 
-## Quick Reference - Repository Contents
+## クイックリファレンス - リポジトリ内容
 
-### Root Directory
+### ルートディレクトリ
 ```
-.github/               # GitHub configuration and templates
-├── ISSUE_TEMPLATE/   # Issue templates
-└── copilot-instructions.md  # This file
-app/                  # Main Android application module
-gradle/              # Gradle version catalog and wrapper
-├── libs.versions.toml  # Centralized dependency versions
-└── wrapper/         # Gradle wrapper files
-build.gradle.kts     # Project-level build configuration
-settings.gradle.kts  # Gradle settings and module inclusion
-gradle.properties    # Gradle JVM and project settings
-gradlew             # Gradle wrapper script (Unix)
-gradlew.bat         # Gradle wrapper script (Windows)
-README.md           # Project documentation
-.gitignore          # Git ignore patterns
+.github/               # GitHub設定とテンプレート
+├── ISSUE_TEMPLATE/   # 課題テンプレート
+└── copilot-instructions.md  # このファイル
+app/                  # メインAndroidアプリケーションモジュール
+gradle/              # Gradleバージョンカタログとラッパー
+├── libs.versions.toml  # 集中化された依存関係バージョン
+└── wrapper/         # Gradleラッパーファイル
+build.gradle.kts     # プロジェクトレベルのビルド設定
+settings.gradle.kts  # Gradle設定とモジュール組み込み
+gradle.properties    # Gradle JVMとプロジェクト設定
+gradlew             # Gradleラッパースクリプト（Unix）
+gradlew.bat         # Gradleラッパースクリプト（Windows）
+README.md           # プロジェクトドキュメント
+.gitignore          # Git除外パターン
 ```
 
-### Application Module (app/)
+### アプリケーションモジュール (app/)
 ```
 src/main/
 ├── java/com/example/myapplication/
-│   ├── MainActivity.kt           # Main activity with Compose UI
-│   └── ui/theme/                # UI theme configuration
-│       ├── Color.kt             # App color definitions
-│       ├── Theme.kt             # Material3 theme setup
-│       └── Type.kt              # Typography definitions
-├── res/                         # Android resources
-│   ├── values/                  # String and style resources
-│   ├── mipmap-*/               # App icons (various densities)
-│   └── xml/                    # Backup and data extraction rules
-└── AndroidManifest.xml         # App manifest and permissions
+│   ├── MainActivity.kt           # Compose UIを使用するメインアクティビティ
+│   └── ui/theme/                # UIテーマ設定
+│       ├── Color.kt             # アプリカラー定義
+│       ├── Theme.kt             # Material3テーマセットアップ
+│       └── Type.kt              # タイポグラフィ定義
+├── res/                         # Androidリソース
+│   ├── values/                  # 文字列とスタイルリソース
+│   ├── mipmap-*/               # アプリアイコン（各種密度）
+│   └── xml/                    # バックアップとデータ抽出ルール
+└── AndroidManifest.xml         # アプリマニフェストと権限
 
-src/test/                       # Unit tests (JVM)
+src/test/                       # ユニットテスト（JVM）
 └── java/com/example/myapplication/
-    └── ExampleUnitTest.kt      # Sample unit test
+    └── ExampleUnitTest.kt      # サンプルユニットテスト
 
-src/androidTest/               # Instrumented tests (Android device)
+src/androidTest/               # インストルメンテーションテスト（Androidデバイス）
 └── java/com/example/myapplication/
-    └── ExampleInstrumentedTest.kt  # Sample instrumented test
+    └── ExampleInstrumentedTest.kt  # サンプルインストルメンテーションテスト
 ```
