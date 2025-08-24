@@ -4,6 +4,22 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// Load version properties
+val versionPropertiesFile = rootProject.file("version.properties")
+val versionProperties = java.util.Properties()
+if (versionPropertiesFile.exists()) {
+    versionProperties.load(java.io.FileInputStream(versionPropertiesFile))
+}
+
+// Generate semantic version
+val versionMajor = versionProperties["VERSION_MAJOR"]?.toString()?.toIntOrNull() ?: 0
+val versionMinor = versionProperties["VERSION_MINOR"]?.toString()?.toIntOrNull() ?: 1 
+val versionPatch = versionProperties["VERSION_PATCH"]?.toString()?.toIntOrNull() ?: 0
+val semanticVersionName = "$versionMajor.$versionMinor.$versionPatch"
+
+// Generate version code from semantic version (formula: major * 10000 + minor * 100 + patch)
+val generatedVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+
 android {
     namespace = "com.example.myapplication"
     compileSdk = 36
@@ -12,8 +28,8 @@ android {
         applicationId = "com.example.myapplication"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = generatedVersionCode
+        versionName = semanticVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
