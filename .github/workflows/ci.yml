@@ -1,0 +1,98 @@
+# Android CI ワークフロー
+# このワークフローは、Androidアプリのビルドとテストを自動化します。
+
+name: Android CI
+
+# トリガー条件
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+# 並行実行の制御
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ビルドとテストのジョブ
+  build:
+    name: ビルドとテスト
+    runs-on: ubuntu-latest
+    
+    steps:
+    # リポジトリのチェックアウト
+    - name: コードをチェックアウト
+      uses: actions/checkout@v4
+      
+    # Java環境のセットアップ
+    - name: Java 11をセットアップ
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    # Android SDKのセットアップ
+    - name: Android SDKをセットアップ
+      uses: android-actions/setup-android@v3
+      with:
+        api-level: 34
+        build-tools: 34.0.0
+        
+    # Gradleの依存関係をキャッシュ
+    - name: Gradle依存関係をキャッシュ
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+          
+    # Gradlewの実行権限を付与
+    - name: Gradlewに実行権限を付与
+      run: chmod +x gradlew
+      
+    # SDK ライセンスを受諾
+    - name: Android SDKライセンスを受諾
+      run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+      
+    # 依存関係のダウンロード
+    - name: 依存関係をダウンロード
+      run: ./gradlew dependencies --no-daemon
+      continue-on-error: true
+      
+    # Lintチェック
+    - name: Lintチェックを実行
+      run: ./gradlew lintDebug --no-daemon
+      continue-on-error: true
+      
+    # 単体テスト実行
+    - name: 単体テストを実行
+      run: ./gradlew testDebugUnitTest --no-daemon
+      
+    # デバッグビルド
+    - name: デバッグビルドを作成
+      run: ./gradlew assembleDebug --no-daemon
+      
+    # テスト結果をアップロード
+    - name: テスト結果をアップロード
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          app/build/reports/
+          app/build/test-results/
+        retention-days: 7
+          
+    # APKファイルをアップロード
+    - name: APKファイルをアップロード
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 7
