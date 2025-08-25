@@ -6,9 +6,6 @@ name: Android CI
 # トリガー条件
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
 
 # 並行実行の制御
 concurrency:
