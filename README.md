@@ -27,11 +27,26 @@ Androidアプリ開発のベースとなるリポジトリ
 ## 開発環境
 
 - **Java**: 17
-- **Android Gradle Plugin**: 8.1.0
+- **Android Gradle Plugin**: 7.4.2
 - **Kotlin**: 2.0.21
 - **ターゲットSDK**: 36
 - **最小SDK**: 24
 
+## 機能
+
+### データベース（Room）
+アプリケーションでは Room データベースライブラリを使用してローカルデータの永続化を行っています。
+
+#### アーキテクチャ
+- **Entity**: `Greeting` - 挨拶メッセージを格納するテーブル
+- **DAO**: `GreetingDao` - データベース操作のインターフェース  
+- **Database**: `AppDatabase` - Room データベース設定
+- **Repository**: `GreetingRepository` - データアクセス層の抽象化
+- **ViewModel**: `MainViewModel` - UI 状態管理
+
+初期データとして「Android」という挨拶メッセージがデータベースに格納され、アプリ起動時に表示されます。
+
 ## バージョン履歴
+- v0.3.0: Room データベース導入
 - v0.2.0: Java 17に移行
 - v0.1.0: 初期バージョン（Java 11）
