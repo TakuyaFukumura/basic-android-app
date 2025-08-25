@@ -31,7 +31,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '11'
-        distribution: 'temurin'
+        distribution: 'corretto '
         
     # Android SDKのセットアップ
     - name: Android SDKをセットアップ
