@@ -22,59 +22,59 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    # リポジトリのチェックアウト
-    - name: コードをチェックアウト
-      uses: actions/checkout@v4
+      # リポジトリのチェックアウト
+      - name: コードをチェックアウト
+        uses: actions/checkout@v4
       
-    # Java環境のセットアップ
-    - name: Java 11をセットアップ
-      uses: actions/setup-java@v4
-      with:
-        java-version: '11'
-        distribution: 'corretto '
-        
-    # Android SDKのセットアップ
-    - name: Android SDKをセットアップ
-      uses: android-actions/setup-android@v3
-      with:
-        packages: |
-          platform-tools
-          platforms;android-34
-          build-tools;34.0.0
+      # Java環境のセットアップ
+      - name: Java 11をセットアップ
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'corretto '
 
-    # Gradleの依存関係をキャッシュ
-    - name: Gradle依存関係をキャッシュ
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-          
-    # Gradlewの実行権限を付与
-    - name: Gradlewに実行権限を付与
-      run: chmod +x gradlew
+      # Android SDKのセットアップ
+      - name: Android SDKをセットアップ
+        uses: android-actions/setup-android@v3
+        with:
+          packages: |
+            platform-tools
+            platforms;android-34
+            build-tools;34.0.0
+
+      # Gradleの依存関係をキャッシュ
+      - name: Gradle依存関係をキャッシュ
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Gradlewの実行権限を付与
+      - name: Gradlewに実行権限を付与
+        run: chmod +x gradlew
       
-    # SDK ライセンスを受諾
-    - name: Android SDKライセンスを受諾
-      run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+      # SDK ライセンスを受諾
+      - name: Android SDKライセンスを受諾
+        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
       
-    # 依存関係のダウンロード
-    - name: 依存関係をダウンロード
-      run: ./gradlew dependencies --no-daemon
-      continue-on-error: true
+      # 依存関係のダウンロード
+      - name: 依存関係をダウンロード
+        run: ./gradlew dependencies --no-daemon
+        continue-on-error: true
       
-    # Lintチェック
-    - name: Lintチェックを実行
-      run: ./gradlew lintDebug --no-daemon
-      continue-on-error: true
+      # Lintチェック
+      - name: Lintチェックを実行
+        run: ./gradlew lintDebug --no-daemon
+        continue-on-error: true
       
-    # 単体テスト実行
-    - name: 単体テストを実行
-      run: ./gradlew testDebugUnitTest --no-daemon
+      # 単体テスト実行
+      - name: 単体テストを実行
+        run: ./gradlew testDebugUnitTest --no-daemon
       
-    # デバッグビルド
-    - name: デバッグビルドを作成
-      run: ./gradlew assembleDebug --no-daemon
+      # デバッグビルド
+      - name: デバッグビルドを作成
+        run: ./gradlew assembleDebug --no-daemon
