@@ -87,5 +87,7 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: app/build/test-results/testDebugUnitTest/
+          path: |
+            app/build/test-results/
+            app/build/reports/tests/
           retention-days: 7
