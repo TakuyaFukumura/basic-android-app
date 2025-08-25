@@ -27,17 +27,14 @@ jobs:
       - name: Java 11をセットアップ
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'corretto '
+          java-version: '11'
+          distribution: 'temurin'
 
       # Android SDKのセットアップ
       - name: Android SDKをセットアップ
         uses: android-actions/setup-android@v3
         with:
-          packages: |
-            platform-tools
-            platforms;android-34
-            build-tools;34.0.0
+          packages: 'platform-tools platforms;android-36 build-tools;35.0.0'
 
       # Gradleの依存関係をキャッシュ
       - name: Gradle依存関係をキャッシュ
@@ -75,3 +72,20 @@ jobs:
       # デバッグビルド
       - name: デバッグビルドを作成
         run: ./gradlew assembleDebug --no-daemon
+      
+      # APKファイルをアーティファクトとして保存
+      - name: APKファイルを保存
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 7
+      
+      # テスト結果をアーティファクトとして保存
+      - name: テスト結果を保存
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: app/build/test-results/testDebugUnitTest/
+          retention-days: 7
