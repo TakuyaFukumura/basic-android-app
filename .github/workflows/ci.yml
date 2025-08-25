@@ -24,10 +24,10 @@ jobs:
         uses: actions/checkout@v4
       
       # Java環境のセットアップ
-      - name: Java 11をセットアップ
+      - name: Java 17をセットアップ
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       # Android SDKのセットアップ
