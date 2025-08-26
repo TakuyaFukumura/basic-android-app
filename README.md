@@ -5,7 +5,8 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 ## 概要
 
 このアプリは以下の機能を提供します：
-- **メインスクリーン**: 「Hello Android!」メッセージの表示
+- **メインスクリーン**: データベースから取得した文字列を使用した「Hello Android!」メッセージの表示
+- **Roomデータベース統合**: SQLiteデータベースからの文字列データ取得
 - **Jetpack Composeを使用したモダンなUI**: 宣言的UIによる効率的な開発
 - **Material 3デザインシステムの採用**: 最新のデザインガイドラインに準拠
 - **ダークテーマとライトテーマの対応**: システム設定に応じた自動切り替え
@@ -13,7 +14,10 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 
 ### アプリの構成
 - **MainActivity**: アプリのエントリーポイント、Composeを設定
-- **Greeting**: "Hello Android!"を表示するコンポーザブル関数
+- **MainViewModel**: データベースからの文字列取得を管理するViewModel
+- **Greeting**: データベースから取得した文字列を表示するコンポーザブル関数
+- **Room Database**: 文字列データを格納するSQLiteデータベース
+- **Repository Pattern**: データアクセスの抽象化レイヤー
 - **テーマシステム**: Color、Theme、Typeファイルによる一貫したデザイン
 
 ## 開発環境要件
@@ -29,7 +33,9 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 
 - **UI フレームワーク**: Jetpack Compose (BOM 2024.09.00)
 - **デザインシステム**: Material 3
-- **アーキテクチャ**: Activity + Compose
+- **アーキテクチャ**: MVVM + Repository Pattern
+- **データベース**: Room (SQLite)
+- **非同期処理**: Kotlin Coroutines + StateFlow
 - **ビルドシステム**: Gradle 8.13 with Kotlin DSL
 - **テスト**: JUnit 4 + Espresso
 
@@ -99,13 +105,27 @@ GitHub Actionsを使用した自動化されたビルドパイプラインが設
 ```
 app/src/main/java/com/example/myapplication/
 ├── MainActivity.kt              # メインアクティビティ
-└── ui/theme/                   # UIテーマ設定
-    ├── Color.kt                # カラーパレット
-    ├── Theme.kt                # Material 3テーマ
-    └── Type.kt                 # タイポグラフィ設定
+├── MyApplication.kt             # アプリケーションクラス（DB初期化）
+├── data/                        # データレイヤー
+│   ├── entity/
+│   │   └── StringEntity.kt      # データベースエンティティ
+│   ├── dao/
+│   │   └── StringDao.kt         # データアクセスオブジェクト
+│   ├── database/
+│   │   └── AppDatabase.kt       # Roomデータベース設定
+│   └── repository/
+│       └── StringRepository.kt  # リポジトリパターン実装
+├── ui/
+│   ├── viewmodel/
+│   │   └── MainViewModel.kt     # ViewModelクラス
+│   └── theme/                   # UIテーマ設定
+│       ├── Color.kt             # カラーパレット
+│       ├── Theme.kt             # Material 3テーマ
+│       └── Type.kt              # タイポグラフィ設定
 ```
 
 ## バージョン履歴
 
+- **v0.3.0**: Roomデータベース統合、MVVM+Repository パターンの実装
 - **v0.2.0**: Java 17への移行、最新依存関係への更新
 - **v0.1.0**: 初期バージョン（Java 11ベース）
