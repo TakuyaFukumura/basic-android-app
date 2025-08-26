@@ -34,21 +34,28 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    // Application インスタンスからリポジトリを取得
-    val application = androidx.compose.ui.platform.LocalContext.current.applicationContext as MyApplication
-    
-    // ViewModelを作成（ファクトリーを使用）
-    val viewModel: MainViewModel = viewModel(
-        factory = MainViewModelFactory(application.repository)
-    )
-    
-    // StateFlowから文字列を取得
-    val greeting by viewModel.greeting.collectAsState()
-    
-    Greeting(
-        name = greeting,
-        modifier = modifier
-    )
+    // Application インスタンスからリポジトリを取得（安全なキャストを使用）
+    val context = androidx.compose.ui.platform.LocalContext.current.applicationContext
+    val application = context as? MyApplication
+
+    if (application != null) {
+        // ViewModelを作成（ファクトリーを使用）
+        val viewModel: MainViewModel = viewModel(
+            factory = MainViewModelFactory(application.repository)
+        )
+        // StateFlowから文字列を取得
+        val greeting by viewModel.greeting.collectAsState()
+        Greeting(
+            name = greeting,
+            modifier = modifier
+        )
+    } else {
+        // キャスト失敗時はエラーメッセージを表示
+        Greeting(
+            name = "Error: Invalid Application Context",
+            modifier = modifier
+        )
+    }
 }
 
 @Composable
