@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -56,7 +57,7 @@ dependencies {
     // Room dependencies
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     
     // ViewModel and Compose integration
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
