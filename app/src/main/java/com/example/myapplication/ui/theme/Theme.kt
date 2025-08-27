@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -13,10 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 
 /**
  * ダークテーマ用のカラースキーム
- * 
+ *
  * 暗い背景で使用される色の組み合わせを定義しています。
  * Color.ktで定義された80番台の色（明るい色）を使用します。
- * 
+ *
  * ダークモードでは明るい色をメインに使用することで、
  * 暗い背景とのコントラストを確保し、視認性を向上させます。
  */
@@ -28,10 +27,10 @@ private val DarkColorScheme = darkColorScheme(
 
 /**
  * ライトテーマ用のカラースキーム
- * 
+ *
  * 明るい背景で使用される色の組み合わせを定義しています。
  * Color.ktで定義された40番台の色（暗い色）を使用します。
- * 
+ *
  * ライトモードでは暗い色をメインに使用することで、
  * 明るい背景とのコントラストを確保し、読みやすさを向上させます。
  */
@@ -57,23 +56,23 @@ private val LightColorScheme = lightColorScheme(
 
 /**
  * アプリケーションのメインテーマ関数
- * 
+ *
  * このComposable関数はアプリ全体のデザインテーマを適用します。
  * Material Design 3の原則に従い、色、タイポグラフィ、形状などを統一します。
- * 
+ *
  * 機能:
  * - システムのダークモード設定の自動検出
  * - Android 12以降でのDynamic Color対応
  * - カスタムカラースキームとタイポグラフィの適用
- * 
+ *
  * @param darkTheme ダークテーマを使用するかどうか。
  *                  デフォルトはシステム設定に従います。
- *                  
+ *
  * @param dynamicColor Dynamic Color（動的な色）機能を使用するかどうか。
  *                     Android 12以降で、ユーザーの壁紙から抽出した色を
  *                     アプリのテーマに適用する機能です。
  *                     デフォルトはtrue（有効）です。
- *                     
+ *
  * @param content このテーマが適用されるUIコンテンツ。
  *                通常はアプリのメインコンテンツが渡されます。
  */
