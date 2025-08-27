@@ -104,7 +104,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 /**
  * 挨拶メッセージを表示するComposable関数
  * 
- * 渡された名前を「Hello [名前]!」の形式で表示します。
+ * 渡された名前を「Hello 名前!」の形式で表示します。
  * シンプルなテキスト表示コンポーネントです。
  * 
  * @param name 表示する名前（通常は「Android」）
