@@ -97,7 +97,7 @@ class MainViewModel(private val repository: StringRepository) : ViewModel() {
                 val stringEntity = repository.getFirstString()
                 // 取得した文字列をUIに反映（nullの場合はデフォルト値を使用）
                 _greeting.value = stringEntity?.value ?: "Android"
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // エラーが発生した場合はデフォルト値を使用
                 // ログ出力やエラー報告などの追加処理も可能
                 _greeting.value = "Android"
