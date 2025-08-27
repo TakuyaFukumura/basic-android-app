@@ -21,4 +21,13 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.example.myapplication", appContext.packageName)
     }
+    
+    @Test
+    fun myApplication_isCorrectType() {
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val application = appContext.applicationContext
+        // アプリケーションクラスの型をチェック
+        assertTrue("Application should be instance of MyApplication", 
+                  application is MyApplication)
+    }
 }

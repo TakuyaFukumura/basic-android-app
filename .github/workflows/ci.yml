@@ -21,7 +21,7 @@ jobs:
     steps:
       # リポジトリのチェックアウト
       - name: コードをチェックアウト
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       # Java環境のセットアップ
       - name: Java 17をセットアップ
@@ -58,12 +58,10 @@ jobs:
       # 依存関係のダウンロード
       - name: 依存関係をダウンロード
         run: ./gradlew dependencies --no-daemon
-        continue-on-error: true
       
       # Lintチェック
       - name: Lintチェックを実行
         run: ./gradlew lintDebug --no-daemon
-        continue-on-error: true
       
       # 単体テスト実行
       - name: 単体テストを実行
@@ -73,21 +71,21 @@ jobs:
       - name: デバッグビルドを作成
         run: ./gradlew assembleDebug --no-daemon
       
-      # APKファイルをアーティファクトとして保存
-      - name: APKファイルを保存
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/*.apk
-          retention-days: 7
-      
-      # テスト結果をアーティファクトとして保存
-      - name: テスト結果を保存
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-results
-          path: |
-            app/build/test-results/
-            app/build/reports/tests/
-          retention-days: 7
+#      # APKファイルをアーティファクトとして保存
+#      - name: APKファイルを保存
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: debug-apk
+#          path: app/build/outputs/apk/debug/*.apk
+#          retention-days: 7
+#
+#      # テスト結果をアーティファクトとして保存
+#      - name: テスト結果を保存
+#        uses: actions/upload-artifact@v4
+#        if: always()
+#        with:
+#          name: test-results
+#          path: |
+#            app/build/test-results/
+#            app/build/reports/tests/
+#          retention-days: 7
