@@ -92,7 +92,7 @@ GitHub Actionsを使用した自動化されたビルドパイプラインが設
 - **Lintチェック**: コード品質の検証
 - **ユニットテスト**: 自動化されたテスト実行
 - **デバッグビルド**: APKファイルの生成
-- **依存関係キャッシュ**: ビルド時間の最適化
+- **Gradleセットアップとキャッシュ**: gradle/actions/setup-gradle@v4による最適化されたビルド環境
 
 ### ワークフロートリガー
 
@@ -126,6 +126,7 @@ app/src/main/java/com/example/myapplication/
 
 ## バージョン履歴
 
+- **v0.5.0**: CI/CDワークフローの改善（gradle/actions/setup-gradle@v4導入）
 - **v0.3.0**: Roomデータベース統合、MVVM+Repository パターンの実装
 - **v0.2.0**: Java 17への移行、最新依存関係への更新
 - **v0.1.0**: 初期バージョン（Java 11ベース）
