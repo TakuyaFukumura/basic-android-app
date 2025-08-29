@@ -10,12 +10,17 @@ class StringDaoImpl : StringDao {
 
     override fun getAllStrings(): Flow<List<StringEntity>> = stringsFlow.asStateFlow()
 
-    // Roomの@Insertや@Deleteが必要な場合は追加実装可能
-    // 例: 文字列追加
-    fun insertString(entity: StringEntity) {
+    override suspend fun insertString(string: StringEntity) {
         val current = stringsFlow.value.toMutableList()
-        current.add(entity)
+        current.add(string)
         stringsFlow.value = current
     }
-}
 
+    override suspend fun getFirstString(): StringEntity? {
+        return stringsFlow.value.firstOrNull()
+    }
+
+    override suspend fun deleteAllStrings() {
+        stringsFlow.value = emptyList()
+    }
+}
