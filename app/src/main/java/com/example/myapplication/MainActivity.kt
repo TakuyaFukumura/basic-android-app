@@ -13,22 +13,35 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.viewmodel.MainViewModel
-import com.example.myapplication.ui.viewmodel.MainViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * アプリケーションのメインアクティビティ
+ * アプリケーションのメインアクティビティ（Hilt対応版）
  *
  * Androidアプリの最初に起動されるコンポーネントです。
- * アプリのUIを構築し、Jetpack Composeを使用して画面を表示します。
+ * Hiltによる依存関係注入により、ViewModelの取得がより簡潔になりました。
+ *
+ * 主な変更点:
+ * - @AndroidEntryPointアノテーションの追加
+ * - hiltViewModel()によるViewModel取得
+ * - 手動でのApplicationインスタンス取得の削除
+ * - ViewModelFactoryの使用停止
+ *
+ * Hiltの利点:
+ * - 自動的な依存関係注入
+ * - ViewModelの簡潔な取得
+ * - エラーが起きにくいコード
+ * - テスト時のモック注入の簡易化
  *
  * 主な機能:
  * - Edge-to-edge表示の有効化
  * - Composeテーマの適用
  * - メイン画面の表示
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     /**
@@ -61,44 +74,36 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * メイン画面を構成するComposable関数
+ * メイン画面を構成するComposable関数（Hilt対応版）
  *
  * アプリのメインコンテンツを表示します。
- * データベースから文字列を取得してViewModelを通じて画面に表示します。
+ * Hiltによる依存関係注入により、ViewModelの取得がより簡潔になりました。
+ *
+ * 主な変更点:
+ * - hiltViewModel()によるViewModel取得
+ * - ApplicationインスタンスやFactoryの手動管理を削除
+ * - エラーハンドリングの簡素化
  *
  * 技術的な詳細:
- * - ApplicationインスタンスからStringRepositoryを取得
- * - ViewModelFactoryを使用してMainViewModelを作成
+ * - hiltViewModel()でMainViewModelを自動取得
  * - StateFlowを使用してデータの変更を監視
- * - 安全なキャストでエラーハンドリングを実装
+ * - Hiltが自動的に依存関係を解決
  *
  * @param modifier UIコンポーネントのレイアウト調整用修飾子。
  *                デフォルト値はModifier（何も変更しない）です。
  */
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
-    // Application インスタンスからリポジトリを取得（安全なキャストを使用）
-    val context = androidx.compose.ui.platform.LocalContext.current.applicationContext
-    val application = context as? MyApplication
-
-    if (application != null) {
-        // ViewModelを作成（ファクトリーを使用）
-        val viewModel: MainViewModel = viewModel(
-            factory = MainViewModelFactory(application.repository)
-        )
-        // StateFlowから文字列を取得
-        val greeting by viewModel.greeting.collectAsState()
-        Greeting(
-            name = greeting,
-            modifier = modifier
-        )
-    } else {
-        // キャスト失敗時はエラーメッセージを表示
-        Greeting(
-            name = "Error: Invalid Application Context",
-            modifier = modifier
-        )
-    }
+    // Hiltを使用してViewModelを取得（依存関係は自動注入される）
+    val viewModel: MainViewModel = hiltViewModel()
+    
+    // StateFlowから文字列を取得
+    val greeting by viewModel.greeting.collectAsState()
+    
+    Greeting(
+        name = greeting,
+        modifier = modifier
+    )
 }
 
 /**
