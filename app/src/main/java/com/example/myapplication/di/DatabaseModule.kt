@@ -13,6 +13,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 /**
@@ -28,9 +29,34 @@ import javax.inject.Singleton
  * - Efficient resource usage
  * - Data consistency
  */
+/**
+ * Qualifier for application-scoped coroutine scope
+ */
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ApplicationScope
+
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
+
+    /**
+     * Provides application-scoped CoroutineScope as singleton
+     *
+     * Creates a singleton CoroutineScope that can be used throughout the application
+     * for database operations and other background tasks:
+     * - Uses SupervisorJob to prevent child coroutine failures from affecting siblings
+     * - Uses IO dispatcher optimized for database and network operations
+     * - Singleton scope ensures efficient resource usage
+     *
+     * @return Application-scoped CoroutineScope for background operations
+     */
+    @Provides
+    @Singleton
+    @ApplicationScope
+    fun provideApplicationScope(): CoroutineScope {
+        return CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    }
 
     /**
      * Provides the main application database instance
@@ -38,17 +64,18 @@ object DatabaseModule {
      * Creates a Room database instance with proper configuration:
      * - Uses application context to avoid memory leaks
      * - Singleton scope for app-wide sharing
-     * - Includes callback for initial data setup
+     * - Includes callback for initial data setup using injected scope
      *
      * @param context Application context for database creation
+     * @param scope Application-scoped CoroutineScope for database initialization
      * @return AppDatabase instance for the entire application
      */
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        // Create a coroutine scope for database initialization
-        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-        
+    fun provideAppDatabase(
+        @ApplicationContext context: Context,
+        @ApplicationScope scope: CoroutineScope
+    ): AppDatabase {
         return AppDatabase.getDatabase(context, scope)
     }
 
