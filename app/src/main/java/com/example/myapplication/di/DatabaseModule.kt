@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -42,21 +43,39 @@ annotation class ApplicationScope
 object DatabaseModule {
 
     /**
+     * アプリケーション用のCoroutineDispatcherを提供
+     * 
+     * デフォルトでDispatchers.IOを提供しますが、テストや特定の要件に応じて
+     * 別のDispatcherを注入することも可能です。
+     * 
+     * @return バックグラウンド処理用のCoroutineDispatcher（デフォルト：IO）
+     */
+    @Provides
+    @Singleton
+    @ApplicationScope
+    fun provideCoroutineDispatcher(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
+
+    /**
      * アプリケーションスコープのCoroutineScopeをシングルトンで提供
      *
      * アプリ全体で利用可能なCoroutineScopeをシングルトンとして生成します。
      * データベース操作やその他のバックグラウンド処理に利用できます：
      * - SupervisorJobを使用し、子コルーチンの失敗が他に影響しないようにします
-     * - データベースやネットワーク処理に最適化されたIOディスパッチャを使用します
+     * - 注入されたCoroutineDispatcherを使用（デフォルト：IOディスパッチャ）
      * - シングルトンスコープで効率的なリソース利用を実現します
      *
+     * @param dispatcher 処理に使用するCoroutineDispatcher
      * @return バックグラウンド処理用のアプリケーションスコープCoroutineScope
      */
     @Provides
     @Singleton
     @ApplicationScope
-    fun provideApplicationScope(): CoroutineScope {
-        return CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    fun provideApplicationScope(
+        @ApplicationScope dispatcher: CoroutineDispatcher
+    ): CoroutineScope {
+        return CoroutineScope(SupervisorJob() + dispatcher)
     }
 
     /**
