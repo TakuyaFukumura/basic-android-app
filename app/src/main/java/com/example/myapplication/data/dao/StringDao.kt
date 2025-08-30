@@ -1,8 +1,10 @@
 package com.example.myapplication.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.myapplication.data.entity.StringEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
  * 実装される操作:
  * - データの読み取り（Query）
  * - データの挿入（Insert）
+ * - データの更新（Update）
  * - データの削除（Delete）
  *
  * 非同期処理:
@@ -81,6 +84,66 @@ interface StringDao {
      */
     @Insert
     suspend fun insertString(string: StringEntity)
+
+    /**
+     * 文字列エンティティを更新する
+     *
+     * 既存のStringEntityをデータベース内で更新します。
+     * 主キー（id）を使用して更新対象のレコードを特定します。
+     *
+     * 使用場面:
+     * - 既存の文字列データの変更
+     * - ユーザーが入力した新しい値での更新
+     * - 設定値の変更
+     *
+     * 注意事項:
+     * - 更新対象のエンティティは有効なidを持つ必要がある
+     * - 存在しないidでの更新は無視される
+     *
+     * @param string 更新するStringEntityオブジェクト
+     *               例: StringEntity(id = 1, value = "新しい文字列")
+     */
+    @Update
+    suspend fun updateString(string: StringEntity)
+
+    /**
+     * 特定の文字列エンティティを削除する
+     *
+     * 指定されたStringEntityをデータベースから削除します。
+     * 主キー（id）を使用して削除対象のレコードを特定します。
+     *
+     * 使用場面:
+     * - 特定のデータの削除
+     * - ユーザーによる個別データの削除操作
+     * - 不要になったデータの整理
+     *
+     * 注意事項:
+     * - 削除対象のエンティティは有効なidを持つ必要がある
+     * - 存在しないidでの削除は無視される
+     * - この操作は元に戻すことができません
+     *
+     * @param string 削除するStringEntityオブジェクト
+     *               例: StringEntity(id = 1, value = "削除対象")
+     */
+    @Delete
+    suspend fun deleteString(string: StringEntity)
+
+    /**
+     * IDで特定の文字列エンティティを削除する
+     *
+     * 指定されたIDの文字列エンティティをデータベースから削除します。
+     * IDのみで削除できるため、エンティティオブジェクト全体を保持する必要がありません。
+     *
+     * 使用場面:
+     * - IDのみが分かっている場合の削除操作
+     * - 効率的なデータ削除
+     * - UIからの削除操作での簡単な実装
+     *
+     * @param id 削除対象の文字列エンティティのID
+     * @return 削除されたレコード数（1: 成功、0: 対象なし）
+     */
+    @Query("DELETE FROM strings WHERE id = :id")
+    suspend fun deleteStringById(id: Int): Int
 
     /**
      * すべての文字列エンティティを削除する

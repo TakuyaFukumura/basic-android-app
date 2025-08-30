@@ -88,4 +88,84 @@ class StringRepository(private val stringDao: StringDao) {
      *               例: StringEntity(value = "Android")
      */
     suspend fun insertString(string: StringEntity) = stringDao.insertString(string)
+
+    /**
+     * 文字列エンティティを更新する
+     *
+     * 既存のStringEntityの内容をデータベース内で更新します。
+     * 主キー（id）を使用して更新対象のレコードを特定し、valueフィールドを変更します。
+     *
+     * 使用場面:
+     * - ユーザーが文字列を編集した場合
+     * - 設定値の変更
+     * - データの修正や訂正
+     *
+     * ビジネスロジック:
+     * - 現在はDAOへの単純な委譲
+     * - 将来的にはバリデーションやキャッシュ無効化の追加が可能
+     * - 更新前後のデータ変換処理の追加も可能
+     *
+     * @param string 更新するStringEntityオブジェクト
+     *               有効なidと新しいvalueを含む必要がある
+     */
+    suspend fun updateString(string: StringEntity) = stringDao.updateString(string)
+
+    /**
+     * 特定の文字列エンティティを削除する
+     *
+     * 指定されたStringEntityをデータベースから削除します。
+     * エンティティオブジェクトを使用した削除操作です。
+     *
+     * 使用場面:
+     * - 特定のデータの削除
+     * - ユーザーによる削除操作
+     * - データの整理やクリーンアップ
+     *
+     * 実装詳細:
+     * - @Deleteアノテーションを使用したRoom操作
+     * - 主キー（id）による削除対象の特定
+     * - トランザクションの自動管理
+     *
+     * @param string 削除するStringEntityオブジェクト
+     */
+    suspend fun deleteString(string: StringEntity) = stringDao.deleteString(string)
+
+    /**
+     * IDで特定の文字列エンティティを削除する
+     *
+     * 指定されたIDの文字列エンティティをデータベースから削除します。
+     * IDのみで削除できるため、効率的な削除操作が可能です。
+     *
+     * 使用場面:
+     * - IDのみが分かっている場合の削除
+     * - UIからの簡単な削除操作
+     * - 一覧画面からの削除ボタン実装
+     *
+     * 戻り値の活用:
+     * - 削除成功/失敗の判定
+     * - UIへのフィードバック表示
+     * - エラーハンドリングの実装
+     *
+     * @param id 削除対象の文字列エンティティのID
+     * @return 削除されたレコード数（1: 成功、0: 対象なし）
+     */
+    suspend fun deleteStringById(id: Int): Int = stringDao.deleteStringById(id)
+
+    /**
+     * すべての文字列エンティティを削除する
+     *
+     * データベース内のすべてのStringEntityを削除します。
+     * データのリセットやクリーンアップ時に使用されます。
+     *
+     * 使用場面:
+     * - データベースの完全リセット
+     * - テスト時のデータクリーンアップ
+     * - アプリの初期化処理
+     *
+     * 注意事項:
+     * - この操作は元に戻すことができません
+     * - 実行前にユーザーへの確認が推奨されます
+     * - データのバックアップを考慮してください
+     */
+    suspend fun deleteAllStrings() = stringDao.deleteAllStrings()
 }
