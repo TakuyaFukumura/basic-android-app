@@ -135,7 +135,7 @@ abstract class AppDatabase : RoomDatabase() {
          *
          * 処理の流れ:
          * 1. 既存データの削除（クリーンな状態を保証）
-         * 2. 「Android」文字列の挿入
+         * 2. 「world」文字列の挿入
          * 3. メイン画面での表示準備完了
          *
          * 非同期処理:
@@ -157,8 +157,8 @@ abstract class AppDatabase : RoomDatabase() {
                     // 既存データを削除（クリーンな初期状態を保証）
                     stringDao.deleteAllStrings()
 
-                    // 「Android」文字列を挿入（メイン画面で表示される文字列）
-                    stringDao.insertString(StringEntity(value = "Android"))
+                    // 「world」文字列を挿入（メイン画面で表示される文字列）
+                    stringDao.insertString(StringEntity(value = "world"))
                 }
             }
         }
