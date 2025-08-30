@@ -14,18 +14,6 @@ import javax.inject.Inject
  * メイン画面のViewModel（Hilt対応版）
  *
  * MVVM（Model-View-ViewModel）アーキテクチャパターンのViewModel層を実装しています。
- * Hiltによる依存関係注入により、より簡潔で保守性の高いコードになりました。
- *
- * 主な変更点:
- * - @HiltViewModelアノテーションの追加
- * - @Inject constructorによる依存関係注入
- * - ViewModelFactoryの削除（Hiltが自動管理）
- *
- * Hiltの利点:
- * - 自動的な依存関係注入
- * - ファクトリークラスの削除
- * - テスト時のモック注入の簡易化
- * - コンパイル時の型安全性
  *
  * 主な責務:
  * - データベースから文字列データを取得

@@ -22,13 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
  * アプリケーションのメインアクティビティ（Hilt対応版）
  *
  * Androidアプリの最初に起動されるコンポーネントです。
- * Hiltによる依存関係注入により、ViewModelの取得がより簡潔になりました。
- *
- * 主な変更点:
- * - @AndroidEntryPointアノテーションの追加
- * - hiltViewModel()によるViewModel取得
- * - 手動でのApplicationインスタンス取得の削除
- * - ViewModelFactoryの使用停止
  *
  * Hiltの利点:
  * - 自動的な依存関係注入
@@ -77,12 +70,6 @@ class MainActivity : ComponentActivity() {
  * メイン画面を構成するComposable関数（Hilt対応版）
  *
  * アプリのメインコンテンツを表示します。
- * Hiltによる依存関係注入により、ViewModelの取得がより簡潔になりました。
- *
- * 主な変更点:
- * - hiltViewModel()によるViewModel取得
- * - ApplicationインスタンスやFactoryの手動管理を削除
- * - エラーハンドリングの簡素化
  *
  * 技術的な詳細:
  * - hiltViewModel()でMainViewModelを自動取得
