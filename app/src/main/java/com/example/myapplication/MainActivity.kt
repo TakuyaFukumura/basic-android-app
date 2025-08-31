@@ -104,11 +104,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var editText by remember { mutableStateOf("") }
     
     // 操作ステータスの自動クリア（5秒後）
-    LaunchedEffect(operationStatus) {
-        if (operationStatus.isNotEmpty()) {
-            kotlinx.coroutines.delay(5000)
-            viewModel.clearOperationStatus()
-        }
+    LaunchedEffect(operationStatus.takeIf { it.isNotEmpty() }) {
+        kotlinx.coroutines.delay(5000)
+        viewModel.clearOperationStatus()
     }
     
     Column(
