@@ -1,5 +1,14 @@
 # basic-android-app
 
+[![Android CI](https://github.com/TakuyaFukumura/basic-android-app/workflows/Android%20CI/badge.svg)](https://github.com/TakuyaFukumura/basic-android-app/actions/workflows/ci.yml)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
+[![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
+[![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
+[![Version](https://img.shields.io/badge/Version-0.6.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![License](https://img.shields.io/badge/License-No%20License-lightgrey.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app)
+
+> **ステータスバッジについて**: 上記のバッジは、プロジェクトの現在の状態を一目で確認できるよう表示しています。CI/CDの実行状況、使用しているKotlinバージョン、サポートするAndroid APIレベル、現在のアプリバージョンなどの重要な情報を提供します。
+
 KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。シンプルな「Hello Android!」メッセージを表示するサンプルアプリです。
 
 ## 概要
