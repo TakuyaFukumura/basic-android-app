@@ -1,48 +1,53 @@
 # basic-android-app
 
 [![Android CI](https://github.com/TakuyaFukumura/basic-android-app/workflows/Android%20CI/badge.svg)](https://github.com/TakuyaFukumura/basic-android-app/actions/workflows/ci.yml)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
-[![Version](https://img.shields.io/badge/Version-0.6.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![Version](https://img.shields.io/badge/Version-0.7.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
 
-KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。シンプルな「Hello Android!」メッセージを表示するサンプルアプリです。
+KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。文字列データベース管理機能を持つCRUDアプリケーションのサンプルです。
 
 ## 概要
 
 このアプリは以下の機能を提供します：
-- **メインスクリーン**: データベースから取得した文字列を使用した「Hello Android!」メッセージの表示
-- **Roomデータベース統合**: SQLiteデータベースからの文字列データ取得
+- **メインスクリーン**: データベースから取得した文字列を使用した動的な挨拶メッセージの表示
+- **文字列CRUD操作**: 文字列の作成、読み取り、更新、削除機能
+- **リアルタイムUI更新**: 操作結果の即座な反映と状態管理
+- **Roomデータベース統合**: SQLiteデータベースを使用した永続的なデータ保存
+- **Hilt依存関係注入**: 依存関係の自動管理と型安全な注入
 - **Jetpack Composeを使用したモダンなUI**: 宣言的UIによる効率的な開発
 - **Material 3デザインシステムの採用**: 最新のデザインガイドラインに準拠
 - **ダークテーマとライトテーマの対応**: システム設定に応じた自動切り替え
 - **動的カラー（Android 12+）の対応**: デバイスの壁紙に基づいた色調整
 
 ### アプリの構成
-- **MainActivity**: アプリのエントリーポイント、Composeを設定
-- **MainViewModel**: データベースからの文字列取得を管理するViewModel
-- **Greeting**: データベースから取得した文字列を表示するコンポーザブル関数
+- **MainActivity**: アプリのエントリーポイント、Composeを設定（Hilt対応）
+- **MainViewModel**: データベースCRUD操作を管理するViewModel（Hiltによる依存関係注入）
+- **MainScreen**: 文字列管理UI（追加、編集、削除、一覧表示）を提供するCompose画面
 - **Room Database**: 文字列データを格納するSQLiteデータベース
 - **Repository Pattern**: データアクセスの抽象化レイヤー
+- **Hilt DI**: 依存関係注入によるコンポーネント間の疎結合化
 - **テーマシステム**: Color、Theme、Typeファイルによる一貫したデザイン
 
 ## 開発環境要件
 
 - **Java**: 17
 - **Android SDK**: API 36対応
-- **Kotlin**: 2.0.21
-- **Android Gradle Plugin**: 8.1.0
+- **Kotlin**: 2.2.10
+- **Android Gradle Plugin**: 8.12.2
 - **ターゲットSDK**: 36
 - **最小SDK**: 24（Android 7.0以上）
 
 ## 技術スタック
 
-- **UI フレームワーク**: Jetpack Compose (BOM 2024.09.00)
+- **UI フレームワーク**: Jetpack Compose (BOM 2025.08.01)
 - **デザインシステム**: Material 3
 - **アーキテクチャ**: MVVM + Repository Pattern
-- **データベース**: Room (SQLite)
+- **依存関係注入**: Hilt 2.57.1
+- **データベース**: Room (SQLite) 2.7.2
 - **非同期処理**: Kotlin Coroutines + StateFlow
-- **ビルドシステム**: Gradle 8.13 with Kotlin DSL
+- **ビルドシステム**: Gradle 8.14.3 with Kotlin DSL
 - **テスト**: JUnit 4 + Espresso
 
 ## セットアップと実行
@@ -110,8 +115,8 @@ GitHub Actionsを使用した自動化されたビルドパイプラインが設
 
 ```
 app/src/main/java/com/example/myapplication/
-├── MainActivity.kt              # メインアクティビティ
-├── MyApplication.kt             # アプリケーションクラス（DB初期化）
+├── MainActivity.kt              # メインアクティビティ（Hilt対応）
+├── MyApplication.kt             # アプリケーションクラス（Hilt対応）
 ├── data/                        # データレイヤー
 │   ├── entity/
 │   │   └── StringEntity.kt      # データベースエンティティ
@@ -121,9 +126,11 @@ app/src/main/java/com/example/myapplication/
 │   │   └── AppDatabase.kt       # Roomデータベース設定
 │   └── repository/
 │       └── StringRepository.kt  # リポジトリパターン実装
+├── di/                          # 依存関係注入レイヤー
+│   └── DatabaseModule.kt        # Hiltデータベースモジュール
 ├── ui/
 │   ├── viewmodel/
-│   │   └── MainViewModel.kt     # ViewModelクラス
+│   │   └── MainViewModel.kt     # ViewModelクラス（Hilt対応）
 │   └── theme/                   # UIテーマ設定
 │       ├── Color.kt             # カラーパレット
 │       ├── Theme.kt             # Material 3テーマ
@@ -132,6 +139,8 @@ app/src/main/java/com/example/myapplication/
 
 ## バージョン履歴
 
+- **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.10への更新
+- **v0.6.0**: Android Gradle Plugin 8.12.2への更新、依存関係最新化
 - **v0.5.0**: CI/CDワークフローの改善（gradle/actions/setup-gradle@v4導入）
 - **v0.3.0**: Roomデータベース統合、MVVM+Repository パターンの実装
 - **v0.2.0**: Java 17への移行、最新依存関係への更新
