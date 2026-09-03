@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="greeting_format">Hello %1$s!</string>
+    <string name="add_string_title">新しい文字列を追加</string>
+    <string name="string_input_label">文字列を入力</string>
+    <string name="add">追加</string>
+    <string name="string_list_title">文字列一覧 (%1$d件)</string>
+    <string name="delete_all">すべて削除</string>
+    <string name="empty_strings_message">データがありません。デフォルト値「world」が表示されます。</string>
+    <string name="edit_string_label">文字列を編集</string>
+    <string name="save">保存</string>
+    <string name="cancel">キャンセル</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="delete_all_confirmation_title">すべての文字列を削除しますか？</string>
+    <string name="delete_all_confirmation_message">この操作は元に戻せません。</string>
 </resources>
