@@ -89,6 +89,25 @@ chmod +x gradlew
 ./gradlew check
 ```
 
+Windowsでは、同等のタスクを次のように実行します。
+
+```powershell
+.\gradlew.bat assembleDebug
+.\gradlew.bat testDebugUnitTest
+.\gradlew.bat lintDebug
+```
+
+## テンプレートから派生アプリを作るときのチェックリスト
+
+1. `app/build.gradle.kts` の `namespace`、`applicationId`、`versionName`、`versionCode` を変更する
+2. Kotlinソースのパッケージ宣言、`AndroidManifest.xml`、テーマ名を新しいアプリ名に合わせる
+3. `app/src/main/res/values/strings.xml` のアプリ名と表示文言を更新する
+4. ランチャーアイコン、バックアップ設定、データベース名と初期データを確認する
+5. `.github/workflows/ci.yml`、Dependabot、署名Secretsを派生アプリの運用に合わせる
+6. `assembleDebug`、`testDebugUnitTest`、`lintDebug`、必要に応じて `connectedAndroidTest` を実行する
+
+詳細な改善候補と設計上の注意点は [`docs/改善点.md`](docs/改善点.md) を参照してください。
+
 ### トラブルシューティング
 
 - 初回ビルドでネットワークエラーが発生する場合は、インターネット接続を確認してください
