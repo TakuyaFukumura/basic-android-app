@@ -60,6 +60,23 @@ class MainViewModelTest {
     }
 
     @Test
+    fun updateAndDeleteString_changeRepositoryAndState() = runTest {
+        val repository = FakeStringRepository()
+        val viewModel = MainViewModel(repository, FakeErrorLogger())
+
+        viewModel.addString("first")
+        advanceUntilIdle()
+        viewModel.updateString(1, "updated")
+        advanceUntilIdle()
+        viewModel.deleteString(1)
+        advanceUntilIdle()
+
+        assertTrue(repository.values.isEmpty())
+        assertEquals("world", viewModel.uiState.value.greeting)
+        assertEquals("文字列を削除しました", viewModel.uiState.value.operationMessage)
+    }
+
+    @Test
     fun repositoryFailureIsExposedAsError() = runTest {
         val viewModel = MainViewModel(FakeStringRepository(shouldFail = true), FakeErrorLogger())
 
