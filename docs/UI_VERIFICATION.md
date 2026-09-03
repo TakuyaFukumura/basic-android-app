@@ -3,30 +3,30 @@
 ## 期待される動作
 
 ### データベース統合前（従来）
-- 画面に「Hello Android!」が表示される
-- "Android"文字列はハードコーディングされている
+- 画面に「Hello world!」が表示される
+- "world" 文字列はデータベースの初期データから取得される
 
 ### データベース統合後（新実装）
-- 画面に「Hello Android!」が表示される（見た目は同じ）
-- "Android"文字列はデータベースから動的に取得される
-- アプリ初回起動時にデータベースに"Android"が挿入される
+- 画面に「Hello world!」が表示される
+- "world" 文字列はデータベースから動的に取得される
+- アプリ初回起動時にデータベースに "world" が挿入される
 - 以降の起動時はデータベースから値を読み込んで表示
 
 ## データベースの動作確認方法
 
 ### 1. 初期化の確認
 ```
-アプリ起動 → MyApplication.onCreate() → AppDatabase.Callback.onCreate() → "Android"をDB挿入
+アプリ起動 → Hiltによる依存関係初期化 → AppDatabase.Callback.onCreate() → "world"をDB挿入
 ```
 
 ### 2. データ取得の確認
 ```
-画面表示 → MainViewModel.init → StringRepository.getFirstString() → DB から "Android" 取得 → UI更新
+画面表示 → MainViewModel.init → StringRepository.getFirstString() → DB から "world" 取得 → UI更新
 ```
 
 ### 3. 状態管理の確認
 ```
-StateFlow: "Loading..." → "Android" → UI に反映
+StateFlow: "Loading..." → "world" → UI に反映
 ```
 
 ## ログ出力での確認
@@ -38,7 +38,7 @@ StateFlow: "Loading..." → "Android" → UI に反映
 4. StateFlow の状態変化ログ
 
 ## 実際のUI
-見た目的には従来と同じ「Hello Android!」が表示されますが、
+初回起動時には「Hello world!」が表示されますが、
 内部的にはデータベースからの動的な値取得に変更されています。
 
 この変更により、将来的に以下のような拡張が容易になります：
