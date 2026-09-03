@@ -4,7 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
-[![Version](https://img.shields.io/badge/Version-0.7.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![Version](https://img.shields.io/badge/Version-0.8.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
 
 KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。文字列データベース管理機能を持つCRUDアプリケーションのサンプルです。
 
@@ -110,6 +110,8 @@ Windowsでは、同等のタスクを次のように実行します。
 
 アーキテクチャ、データフロー、検証コマンドは [`docs/architecture.md`](docs/architecture.md) にまとめています。`docs/` の文書を変更した場合はREADMEからの導線も更新してください。
 
+Releaseビルド、署名、公開前チェックは [`docs/release.md`](docs/release.md) を参照してください。
+
 ### トラブルシューティング
 
 - 初回ビルドでネットワークエラーが発生する場合は、インターネット接続を確認してください
@@ -163,6 +165,7 @@ app/src/main/java/com/example/myapplication/
 ## バージョン履歴
 
 - **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.20への更新
+- **v0.8.0**: 型付きUI状態、Repository抽象化、ViewModelテスト、CI品質ゲートを追加
 - **v0.6.0**: Android Gradle Plugin 8.12.2への更新、依存関係最新化
 - **v0.5.0**: CI/CDワークフローの改善（gradle/actions/setup-gradle@v4導入）
 - **v0.3.0**: Roomデータベース統合、MVVM+Repository パターンの実装

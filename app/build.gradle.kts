@@ -14,15 +14,16 @@ android {
         applicationId = "com.example.myapplication"
         minSdk = 24
         targetSdk = 36
-        versionCode = 2
-        versionName = "0.7.0"
+        versionCode = 3
+        versionName = "0.8.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
