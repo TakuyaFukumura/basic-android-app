@@ -107,7 +107,7 @@ jobs:
       - name: インストルメンテーションテストを実行
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 36
+          api-level: 35
           arch: x86_64
           profile: pixel_2
           script: ./gradlew connectedAndroidTest --no-daemon
