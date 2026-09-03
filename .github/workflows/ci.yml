@@ -10,6 +10,9 @@ permissions:
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
 
 # 並行実行の制御
 concurrency:
@@ -38,7 +41,7 @@ jobs:
       - name: Android SDKをセットアップ
         uses: android-actions/setup-android@v4
         with:
-          packages: 'platform-tools platforms;android-36 build-tools;35.0.0'
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
 
       # Gradleのセットアップとキャッシュ
       - name: Gradleをセットアップ
@@ -81,4 +84,30 @@ jobs:
           path: |
             app/build/test-results/
             app/build/reports/tests/
+            app/build/reports/lint-results/
           retention-days: 7
+
+  instrumentation:
+    name: インストルメンテーションテスト
+    runs-on: ubuntu-latest
+    steps:
+      - name: コードをチェックアウト
+        uses: actions/checkout@v7
+      - name: Java 17をセットアップ
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Android SDKをセットアップ
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+      - name: Gradleをセットアップ
+        uses: gradle/actions/setup-gradle@v6
+      - name: インストルメンテーションテストを実行
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: x86_64
+          profile: pixel_2
+          script: ./gradlew connectedAndroidTest --no-daemon
