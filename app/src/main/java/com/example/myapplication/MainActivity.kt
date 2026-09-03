@@ -9,11 +9,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.example.myapplication.ui.viewmodel.MainViewModel
@@ -94,14 +96,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val viewModel: MainViewModel = hiltViewModel()
     
     // StateFlowから各種状態を取得
-    val greeting by viewModel.greeting.collectAsState()
-    val stringList by viewModel.stringList.collectAsState()
-    val operationStatus by viewModel.operationStatus.collectAsState()
+    val greeting by viewModel.greeting.collectAsStateWithLifecycle()
+    val stringList by viewModel.stringList.collectAsStateWithLifecycle()
+    val operationStatus by viewModel.operationStatus.collectAsStateWithLifecycle()
     
     // 入力フィールドの状態管理
     var inputText by remember { mutableStateOf("") }
     var editingId by remember { mutableStateOf<Int?>(null) }
     var editText by remember { mutableStateOf("") }
+    var showDeleteAllConfirmation by remember { mutableStateOf(false) }
+    var deleteTarget by remember { mutableStateOf<StringEntity?>(null) }
     
     // 操作ステータスの自動クリア（5秒後）
     LaunchedEffect(operationStatus.takeIf { it.isNotEmpty() }) {
@@ -127,7 +131,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Hello $greeting!",
+                    text = stringResource(R.string.greeting_format, greeting),
                     style = MaterialTheme.typography.headlineMedium
                 )
             }
@@ -158,7 +162,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "新しい文字列を追加",
+                    text = stringResource(R.string.add_string_title),
                     style = MaterialTheme.typography.titleMedium
                 )
                 
@@ -169,8 +173,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 ) {
                     OutlinedTextField(
                         value = inputText,
-                        onValueChange = { inputText = it },
-                        label = { Text("文字列を入力") },
+                        onValueChange = { inputText = it.take(100) },
+                        label = { Text(stringResource(R.string.string_input_label)) },
+                        supportingText = {
+                            if (inputText.isNotEmpty() && inputText.isBlank()) {
+                                Text(stringResource(R.string.string_input_error))
+                            }
+                        },
+                        isError = inputText.isNotEmpty() && inputText.isBlank(),
+                        singleLine = true,
+                        maxLines = 1,
                         modifier = Modifier.weight(1f)
                     )
                     
@@ -182,7 +194,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             }
                         }
                     ) {
-                        Text("追加")
+                        Text(stringResource(R.string.add))
                     }
                 }
             }
@@ -201,15 +213,15 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "文字列一覧 (${stringList.size}件)",
+                        text = stringResource(R.string.string_list_title, stringList.size),
                         style = MaterialTheme.typography.titleMedium
                     )
                     
                     if (stringList.isNotEmpty()) {
                         TextButton(
-                            onClick = { viewModel.deleteAllStrings() }
+                            onClick = { showDeleteAllConfirmation = true }
                         ) {
-                            Text("すべて削除")
+                            Text(stringResource(R.string.delete_all))
                         }
                     }
                 }
@@ -218,7 +230,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 
                 if (stringList.isEmpty()) {
                     Text(
-                        text = "データがありません。デフォルト値「world」が表示されます。",
+                        text = stringResource(R.string.empty_strings_message),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
@@ -226,7 +238,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(stringList) { stringEntity ->
+                        items(stringList, key = { it.id }) { stringEntity ->
                             StringListItem(
                                 stringEntity = stringEntity,
                                 editingId = editingId,
@@ -245,14 +257,60 @@ fun MainScreen(modifier: Modifier = Modifier) {
                                     editText = ""
                                 },
                                 onEditTextChange = { editText = it },
-                                onDelete = { id ->
-                                    viewModel.deleteString(id)
+                                onDelete = { entity ->
+                                    deleteTarget = entity
                                 }
                             )
                         }
                     }
                 }
             }
+        }
+
+        if (showDeleteAllConfirmation) {
+            AlertDialog(
+                onDismissRequest = { showDeleteAllConfirmation = false },
+                title = { Text(stringResource(R.string.delete_all_confirmation_title)) },
+                text = { Text(stringResource(R.string.delete_all_confirmation_message)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showDeleteAllConfirmation = false
+                            viewModel.deleteAllStrings()
+                        }
+                    ) {
+                        Text(stringResource(R.string.delete_all))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteAllConfirmation = false }) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            )
+        }
+
+        deleteTarget?.let { target ->
+            AlertDialog(
+                onDismissRequest = { deleteTarget = null },
+                title = { Text(stringResource(R.string.delete_confirmation_title)) },
+                text = { Text(stringResource(R.string.delete_confirmation_message, target.value)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            viewModel.deleteString(target.id)
+                            deleteTarget = null
+                        }
+                    ) {
+                        Text(stringResource(R.string.delete))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { deleteTarget = null }) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            )
         }
     }
 }
@@ -280,7 +338,7 @@ fun StringListItem(
     onEditSave: (Int) -> Unit,
     onEditCancel: () -> Unit,
     onEditTextChange: (String) -> Unit,
-    onDelete: (Int) -> Unit
+    onDelete: (StringEntity) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -296,8 +354,8 @@ fun StringListItem(
             ) {
                 OutlinedTextField(
                     value = editText,
-                    onValueChange = onEditTextChange,
-                    label = { Text("文字列を編集") },
+                    onValueChange = { onEditTextChange(it.take(100)) },
+                    label = { Text(stringResource(R.string.edit_string_label)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 
@@ -308,13 +366,13 @@ fun StringListItem(
                         onClick = { onEditSave(stringEntity.id) },
                         enabled = editText.isNotBlank()
                     ) {
-                        Text("保存")
+                        Text(stringResource(R.string.save))
                     }
                     
                     OutlinedButton(
                         onClick = onEditCancel
                     ) {
-                        Text("キャンセル")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             }
@@ -347,13 +405,13 @@ fun StringListItem(
                     TextButton(
                         onClick = { onEditStart(stringEntity.id, stringEntity.value) }
                     ) {
-                        Text("編集")
+                        Text(stringResource(R.string.edit))
                     }
                     
                     TextButton(
-                        onClick = { onDelete(stringEntity.id) }
+                        onClick = { onDelete(stringEntity) }
                     ) {
-                        Text("削除")
+                        Text(stringResource(R.string.delete))
                     }
                 }
             }
@@ -374,7 +432,7 @@ fun StringListItem(
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = stringResource(R.string.greeting_format, name),
         modifier = modifier
     )
 }

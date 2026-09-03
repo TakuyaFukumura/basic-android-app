@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.entity.StringEntity
@@ -8,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,6 +37,10 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: StringRepository
 ) : ViewModel() {
+
+    private companion object {
+        const val TAG = "MainViewModel"
+    }
 
     /**
      * 内部で管理される挨拶メッセージの状態
@@ -132,9 +138,10 @@ class MainViewModel @Inject constructor(
                 val stringEntity = repository.getFirstString()
                 // 取得した文字列をUIに反映（nullの場合はデフォルト値を使用）
                 _greeting.value = stringEntity?.value ?: "world"
-            } catch (_: Exception) {
-                // エラーが発生した場合はデフォルト値を使用
-                // ログ出力やエラー報告などの追加処理も可能
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Log.e(TAG, "Failed to load greeting", exception)
                 _greeting.value = "world"
             }
         }
@@ -152,7 +159,10 @@ class MainViewModel @Inject constructor(
                 repository.getAllStrings().collect { strings ->
                     _stringList.value = strings
                 }
-            } catch (_: Exception) {
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Log.e(TAG, "Failed to load strings", exception)
                 _stringList.value = emptyList()
                 _operationStatus.value = "データの読み込みに失敗しました"
             }
@@ -181,7 +191,10 @@ class MainViewModel @Inject constructor(
                 
                 // 最新データで画面を更新
                 loadGreeting()
-            } catch (_: Exception) {
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Log.e(TAG, "Failed to add string", exception)
                 _operationStatus.value = "文字列の追加に失敗しました"
             }
         }
@@ -210,7 +223,10 @@ class MainViewModel @Inject constructor(
                 
                 // 最新データで画面を更新
                 loadGreeting()
-            } catch (_: Exception) {
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Log.e(TAG, "Failed to update string", exception)
                 _operationStatus.value = "文字列の更新に失敗しました"
             }
         }
@@ -236,7 +252,10 @@ class MainViewModel @Inject constructor(
                 
                 // 最新データで画面を更新
                 loadGreeting()
-            } catch (_: Exception) {
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Log.e(TAG, "Failed to delete string", exception)
                 _operationStatus.value = "文字列の削除に失敗しました"
             }
         }
@@ -258,7 +277,10 @@ class MainViewModel @Inject constructor(
                 
                 // 最新データで画面を更新（デフォルト値が表示される）
                 loadGreeting()
-            } catch (_: Exception) {
+            } catch (exception: CancellationException) {
+                throw exception
+            } catch (exception: Exception) {
+                Log.e(TAG, "Failed to delete all strings", exception)
                 _operationStatus.value = "文字列の削除に失敗しました"
             }
         }
