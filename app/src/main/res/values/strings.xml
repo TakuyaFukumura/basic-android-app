@@ -12,6 +12,9 @@
     <string name="cancel">キャンセル</string>
     <string name="edit">編集</string>
     <string name="delete">削除</string>
+    <string name="delete_confirmation_title">この文字列を削除しますか？</string>
+    <string name="delete_confirmation_message">「%1$s」を削除します。この操作は元に戻せません。</string>
     <string name="delete_all_confirmation_title">すべての文字列を削除しますか？</string>
     <string name="delete_all_confirmation_message">この操作は元に戻せません。</string>
+    <string name="string_input_error">文字列を入力してください</string>
 </resources>

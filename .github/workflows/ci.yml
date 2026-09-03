@@ -3,6 +3,9 @@
 
 name: Android CI
 
+permissions:
+  contents: read
+
 # トリガー条件
 on:
   push:

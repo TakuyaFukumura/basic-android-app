@@ -105,6 +105,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var editingId by remember { mutableStateOf<Int?>(null) }
     var editText by remember { mutableStateOf("") }
     var showDeleteAllConfirmation by remember { mutableStateOf(false) }
+    var deleteTarget by remember { mutableStateOf<StringEntity?>(null) }
     
     // 操作ステータスの自動クリア（5秒後）
     LaunchedEffect(operationStatus.takeIf { it.isNotEmpty() }) {
@@ -172,8 +173,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 ) {
                     OutlinedTextField(
                         value = inputText,
-                        onValueChange = { inputText = it },
+                        onValueChange = { inputText = it.take(100) },
                         label = { Text(stringResource(R.string.string_input_label)) },
+                        supportingText = {
+                            if (inputText.isNotEmpty() && inputText.isBlank()) {
+                                Text(stringResource(R.string.string_input_error))
+                            }
+                        },
+                        isError = inputText.isNotEmpty() && inputText.isBlank(),
+                        singleLine = true,
+                        maxLines = 1,
                         modifier = Modifier.weight(1f)
                     )
                     
@@ -248,8 +257,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                                     editText = ""
                                 },
                                 onEditTextChange = { editText = it },
-                                onDelete = { id ->
-                                    viewModel.deleteString(id)
+                                onDelete = { entity ->
+                                    deleteTarget = entity
                                 }
                             )
                         }
@@ -275,6 +284,29 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 },
                 dismissButton = {
                     TextButton(onClick = { showDeleteAllConfirmation = false }) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            )
+        }
+
+        deleteTarget?.let { target ->
+            AlertDialog(
+                onDismissRequest = { deleteTarget = null },
+                title = { Text(stringResource(R.string.delete_confirmation_title)) },
+                text = { Text(stringResource(R.string.delete_confirmation_message, target.value)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            viewModel.deleteString(target.id)
+                            deleteTarget = null
+                        }
+                    ) {
+                        Text(stringResource(R.string.delete))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { deleteTarget = null }) {
                         Text(stringResource(R.string.cancel))
                     }
                 }
@@ -306,7 +338,7 @@ fun StringListItem(
     onEditSave: (Int) -> Unit,
     onEditCancel: () -> Unit,
     onEditTextChange: (String) -> Unit,
-    onDelete: (Int) -> Unit
+    onDelete: (StringEntity) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -322,7 +354,7 @@ fun StringListItem(
             ) {
                 OutlinedTextField(
                     value = editText,
-                    onValueChange = onEditTextChange,
+                    onValueChange = { onEditTextChange(it.take(100)) },
                     label = { Text(stringResource(R.string.edit_string_label)) },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -377,7 +409,7 @@ fun StringListItem(
                     }
                     
                     TextButton(
-                        onClick = { onDelete(stringEntity.id) }
+                        onClick = { onDelete(stringEntity) }
                     ) {
                         Text(stringResource(R.string.delete))
                     }
