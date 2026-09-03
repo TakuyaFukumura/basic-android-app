@@ -96,9 +96,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val viewModel: MainViewModel = hiltViewModel()
     
     // StateFlowから各種状態を取得
-    val greeting by viewModel.greeting.collectAsStateWithLifecycle()
-    val stringList by viewModel.stringList.collectAsStateWithLifecycle()
-    val operationStatus by viewModel.operationStatus.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val stringList = uiState.strings
+    val operationStatus = uiState.operationMessage ?: uiState.errorMessage.orEmpty()
     
     // 入力フィールドの状態管理
     var inputText by remember { mutableStateOf("") }
@@ -131,7 +131,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.greeting_format, greeting),
+                    text = stringResource(R.string.greeting_format, uiState.greeting),
                     style = MaterialTheme.typography.headlineMedium
                 )
             }
@@ -148,7 +148,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 Text(
                     text = operationStatus,
                     modifier = Modifier.padding(12.dp),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (uiState.errorMessage != null) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    }
                 )
             }
         }
@@ -183,7 +188,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         isError = inputText.isNotEmpty() && inputText.isBlank(),
                         singleLine = true,
                         maxLines = 1,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                        ),
+                        keyboardActions = androidx.compose.foundation.text.KeyboardActions(
+                            onDone = {
+                                if (inputText.isNotBlank() && !uiState.isOperationInProgress) {
+                                    viewModel.addString(inputText)
+                                    inputText = ""
+                                }
+                            }
+                        )
                     )
                     
                     Button(
@@ -192,7 +208,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                                 viewModel.addString(inputText)
                                 inputText = ""
                             }
-                        }
+                        },
+                        enabled = inputText.isNotBlank() && !uiState.isOperationInProgress
                     ) {
                         Text(stringResource(R.string.add))
                     }
