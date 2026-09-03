@@ -27,7 +27,17 @@ import kotlinx.coroutines.flow.Flow
  *
  * @property stringDao StringEntityへのデータアクセスを提供するDAO
  */
-class StringRepository(private val stringDao: StringDao) {
+interface StringRepository {
+    fun getAllStrings(): Flow<List<StringEntity>>
+    suspend fun getFirstString(): StringEntity?
+    suspend fun insertString(string: StringEntity)
+    suspend fun updateString(string: StringEntity)
+    suspend fun deleteString(string: StringEntity)
+    suspend fun deleteStringById(id: Int): Int
+    suspend fun deleteAllStrings()
+}
+
+class RoomStringRepository(private val stringDao: StringDao) : StringRepository {
 
     /**
      * すべての文字列エンティティを取得する
@@ -47,7 +57,7 @@ class StringRepository(private val stringDao: StringDao) {
      *
      * @return すべてのStringEntityのリストを含むFlow
      */
-    fun getAllStrings(): Flow<List<StringEntity>> = stringDao.getAllStrings()
+    override fun getAllStrings(): Flow<List<StringEntity>> = stringDao.getAllStrings()
 
     /**
      * 最初の文字列エンティティを取得する（「Android」文字列）
@@ -66,7 +76,7 @@ class StringRepository(private val stringDao: StringDao) {
      *
      * @return 最初のStringEntity、存在しない場合はnull
      */
-    suspend fun getFirstString(): StringEntity? = stringDao.getFirstString()
+    override suspend fun getFirstString(): StringEntity? = stringDao.getFirstString()
 
     /**
      * 文字列エンティティを挿入する
@@ -87,7 +97,7 @@ class StringRepository(private val stringDao: StringDao) {
      * @param string 挿入するStringEntityオブジェクト
      *               例: StringEntity(value = "Android")
      */
-    suspend fun insertString(string: StringEntity) = stringDao.insertString(string)
+    override suspend fun insertString(string: StringEntity) = stringDao.insertString(string)
 
     /**
      * 文字列エンティティを更新する
@@ -108,7 +118,7 @@ class StringRepository(private val stringDao: StringDao) {
      * @param string 更新するStringEntityオブジェクト
      *               有効なidと新しいvalueを含む必要がある
      */
-    suspend fun updateString(string: StringEntity) = stringDao.updateString(string)
+    override suspend fun updateString(string: StringEntity) = stringDao.updateString(string)
 
     /**
      * 特定の文字列エンティティを削除する
@@ -128,7 +138,7 @@ class StringRepository(private val stringDao: StringDao) {
      *
      * @param string 削除するStringEntityオブジェクト
      */
-    suspend fun deleteString(string: StringEntity) = stringDao.deleteString(string)
+    override suspend fun deleteString(string: StringEntity) = stringDao.deleteString(string)
 
     /**
      * IDで特定の文字列エンティティを削除する
@@ -149,7 +159,7 @@ class StringRepository(private val stringDao: StringDao) {
      * @param id 削除対象の文字列エンティティのID
      * @return 削除されたレコード数（1: 成功、0: 対象なし）
      */
-    suspend fun deleteStringById(id: Int): Int = stringDao.deleteStringById(id)
+    override suspend fun deleteStringById(id: Int): Int = stringDao.deleteStringById(id)
 
     /**
      * すべての文字列エンティティを削除する
@@ -167,5 +177,5 @@ class StringRepository(private val stringDao: StringDao) {
      * - 実行前にユーザーへの確認が推奨されます
      * - データのバックアップを考慮してください
      */
-    suspend fun deleteAllStrings() = stringDao.deleteAllStrings()
+    override suspend fun deleteAllStrings() = stringDao.deleteAllStrings()
 }
