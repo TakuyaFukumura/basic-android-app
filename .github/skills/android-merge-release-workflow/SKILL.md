@@ -67,10 +67,10 @@ gh pr view <PR番号> --json reviewDecision,mergeStateStatus,statusCheckRollup
 
 ## PR のマージ
 
-マージ方法はリポジトリの方針に合わせる。特に指定がなければ、履歴を整理しやすい squash merge を使用する。
+マージ方法は **Create a merge commit** を使用する。PR の変更を単一のマージコミットとして `main` に取り込み、元の作業ブランチは不要になったら削除する。
 
 ```powershell
-gh pr merge <PR番号> --squash --delete-branch
+gh pr merge <PR番号> --merge --delete-branch
 ```
 
 マージ後、PR が `MERGED` になったことと、マージコミットを確認する。
