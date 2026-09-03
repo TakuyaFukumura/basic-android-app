@@ -7,7 +7,7 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 
 ### 前提条件とセットアップ
 - Java 17が必要です（この環境で利用可能）
-- Android SDKは `/usr/local/lib/android/sdk` にプリインストールされています
+- Android SDKは、Windowsでは `local.properties` の `sdk.dir` に設定された場所を使用します
 - Android platform-toolsとbuild-toolsが利用可能です
 - Gradleラッパーがプロジェクトに含まれています
 
@@ -53,7 +53,7 @@ adb uninstall com.example.myapplication
 
 ### 既知の問題と制限事項
 **重要：ネットワークアクセスが必要**
-- `gradle/libs.versions.toml` 内のAndroid Gradle Plugin バージョン (8.12.1) は、ネットワークアクセスが制限された環境では利用できない場合があります
+- `gradle/libs.versions.toml` 内のAndroid Gradle Plugin バージョン (8.12.2) は、ネットワークアクセスが制限された環境では利用できない場合があります
 - ビルドが「Plugin was not found」エラーで失敗する場合、これはGoogleのMavenリポジトリとのネットワーク接続問題を示しています
 - そのような場合は、`gradle/libs.versions.toml` でより安定したAGPバージョン（例：8.1.0 または 7.4.2）への更新を検討してください
 
@@ -92,7 +92,7 @@ adb uninstall com.example.myapplication
 
 4. **ユーザーシナリオを手動でテストしてください:**
    - デバイス/エミュレーターにアプリをインストール
-   - アプリを起動し、「Hello Android!」テキストが表示されることを確認
+   - アプリを起動し、「Hello world!」テキストが表示されることを確認
    - 基本的なナビゲーションとUI操作をテスト
    - 基本的な使用中にアプリがクラッシュしないことを確認
 
@@ -153,21 +153,21 @@ basic-android-app/
 3. デバイス/エミュレーターで即座にテスト
 
 ## 技術スタックと現在の設定
-- **言語:** Kotlin 2.0.21
-- **UIフレームワーク:** Jetpack Compose with BOM 2024.09.00
-- **ビルドシステム:** Gradle 8.13 with Kotlin DSL
-- **Android Gradle Plugin:** 8.12.1 (ネットワーク制限環境では調整が必要な場合があります)
+- **言語:** Kotlin 2.2.20
+- **UIフレームワーク:** Jetpack Compose with BOM 2025.08.01
+- **ビルドシステム:** Gradle 8.14.3 with Kotlin DSL
+- **Android Gradle Plugin:** 8.12.2 (ネットワーク制限環境では調整が必要な場合があります)
 - **Target SDK:** 36 (Android API level 36)
 - **Min SDK:** 24 (Android 7.0)
 - **Java互換性:** Java 17 (環境で利用可能)
 - **パッケージ名:** com.example.myapplication
-- **バージョン:** 0.1.0 (versionCode 1)
+- **バージョン:** 0.7.0 (versionCode 2)
 
 ### 現在の依存関係 (libs.versions.toml より)
-- androidx-core-ktx: 1.10.1
-- androidx-lifecycle-runtime-ktx: 2.6.1
-- androidx-activity-compose: 1.8.0
-- androidx-compose-bom: 2024.09.00
+- androidx-core-ktx: 1.17.0
+- androidx-lifecycle-runtime-ktx: 2.9.3
+- androidx-activity-compose: 1.10.1
+- androidx-compose-bom: 2025.08.01
 - JUnit: 4.13.2
 - androidx-junit: 1.1.5
 - androidx-espresso-core: 3.5.1

@@ -1,7 +1,7 @@
 # basic-android-app
 
 [![Android CI](https://github.com/TakuyaFukumura/basic-android-app/workflows/Android%20CI/badge.svg)](https://github.com/TakuyaFukumura/basic-android-app/actions/workflows/ci.yml)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
 [![Version](https://img.shields.io/badge/Version-0.7.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
@@ -34,7 +34,7 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 
 - **Java**: 17
 - **Android SDK**: API 36対応
-- **Kotlin**: 2.2.10
+- **Kotlin**: 2.2.20
 - **Android Gradle Plugin**: 8.12.2
 - **ターゲットSDK**: 36
 - **最小SDK**: 24（Android 7.0以上）
@@ -45,7 +45,7 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 - **デザインシステム**: Material 3
 - **アーキテクチャ**: MVVM + Repository Pattern
 - **依存関係注入**: Hilt 2.57.1
-- **データベース**: Room (SQLite) 2.7.2
+- **データベース**: Room (SQLite) 2.8.4
 - **非同期処理**: Kotlin Coroutines + StateFlow
 - **ビルドシステム**: Gradle 8.14.3 with Kotlin DSL
 - **テスト**: JUnit 4 + Espresso
@@ -139,7 +139,7 @@ app/src/main/java/com/example/myapplication/
 
 ## バージョン履歴
 
-- **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.10への更新
+- **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.20への更新
 - **v0.6.0**: Android Gradle Plugin 8.12.2への更新、依存関係最新化
 - **v0.5.0**: CI/CDワークフローの改善（gradle/actions/setup-gradle@v4導入）
 - **v0.3.0**: Roomデータベース統合、MVVM+Repository パターンの実装
