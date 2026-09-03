@@ -9,10 +9,10 @@ permissions:
 # トリガー条件
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * 1'
 
 # 並行実行の制御
 concurrency:
