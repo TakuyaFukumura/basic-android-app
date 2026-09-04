@@ -17,4 +17,6 @@
     <string name="delete_all_confirmation_title">すべての文字列を削除しますか？</string>
     <string name="delete_all_confirmation_message">この操作は元に戻せません。</string>
     <string name="string_input_error">文字列を入力してください</string>
+    <string name="edit_content_description">文字列を編集</string>
+    <string name="delete_content_description">文字列を削除</string>
 </resources>
