@@ -4,7 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
-[![Version](https://img.shields.io/badge/Version-0.10.1-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![Version](https://img.shields.io/badge/Version-0.11.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
 
 KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。文字列データベース管理機能を持つCRUDアプリケーションのサンプルです。
 
@@ -19,6 +19,7 @@ KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーシ�
 - **Jetpack Composeを使用したモダンなUI**: 宣言的UIによる効率的な開発
 - **Material 3デザインシステムの採用**: 最新のデザインガイドラインに準拠
 - **ダークテーマとライトテーマの対応**: システム設定に応じた自動切り替え
+- **ダークモード切り替え**: 画面上のSwitchでテーマを手動切り替え
 - **動的カラー（Android 12+）の対応**: デバイスの壁紙に基づいた色調整
 
 ### アプリの構成
@@ -178,6 +179,7 @@ app/src/main/java/com/example/myapplication/
 
 ## バージョン履歴
 
+- **v0.11.0**: 画面上のSwitchによるダークモード切り替えを追加
 - **v0.10.1**: Kotlinフォーマットと静的解析をCI品質ゲートへ追加
 - **v0.10.0**: Dependency Reviewによる脆弱性検出と依存関係更新時のCI検証を追加
 - **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.20への更新

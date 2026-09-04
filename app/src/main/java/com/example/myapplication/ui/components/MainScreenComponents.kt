@@ -19,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -33,6 +34,38 @@ import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.viewmodel.MainError
+
+@Composable
+fun ThemeToggle(
+    darkTheme: Boolean,
+    onToggle: (Boolean) -> Unit,
+) {
+    val toggleDescription = stringResource(R.string.dark_mode_toggle_content_description)
+
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.dark_mode),
+            style = MaterialTheme.typography.labelLarge,
+        )
+        Switch(
+            checked = darkTheme,
+            onCheckedChange = onToggle,
+            modifier =
+                Modifier
+                    .testTag("darkModeToggle")
+                    .semantics {
+                        contentDescription = toggleDescription
+                    },
+        )
+    }
+}
 
 @Composable
 fun GreetingCard(name: String) {
