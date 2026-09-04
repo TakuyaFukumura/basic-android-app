@@ -19,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     /**
      * アクティビティが作成されたときに呼び出されるメソッド
      *

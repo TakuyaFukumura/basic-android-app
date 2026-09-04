@@ -24,10 +24,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
@@ -38,17 +38,18 @@ import com.example.myapplication.ui.viewmodel.MainError
 fun GreetingCard(name: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = stringResource(R.string.greeting_format, name),
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
         }
     }
@@ -58,29 +59,31 @@ fun GreetingCard(name: String) {
 fun MainOperationStatus(
     status: String,
     error: MainError?,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
 ) {
     if (status.isNotEmpty()) {
         Card(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            ),
-            modifier = Modifier.fillMaxWidth()
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Row(
                 modifier = Modifier.padding(12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = status,
                     modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (error != null) {
-                        MaterialTheme.colorScheme.error
-                    } else {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    }
+                    color =
+                        if (error != null) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        },
                 )
                 if (error == MainError.LOAD_FAILED) {
                     TextButton(onClick = onRetry) {
@@ -97,24 +100,24 @@ fun AddStringForm(
     inputText: String,
     isOperationInProgress: Boolean,
     onInputTextChange: (String) -> Unit,
-    onAdd: (String) -> Unit
+    onAdd: (String) -> Unit,
 ) {
     val addDescription = stringResource(R.string.add)
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 text = stringResource(R.string.add_string_title),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 OutlinedTextField(
                     value = inputText,
@@ -126,17 +129,19 @@ fun AddStringForm(
                     isError = inputText.isNotEmpty() && inputText.isBlank(),
                     singleLine = true,
                     maxLines = 1,
-                    modifier = Modifier
-                        .weight(1f)
-                        .testTag("stringInput"),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .testTag("stringInput"),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            if (inputText.isNotBlank() && !isOperationInProgress) {
-                                onAdd(inputText)
-                            }
-                        }
-                    )
+                    keyboardActions =
+                        KeyboardActions(
+                            onDone = {
+                                if (inputText.isNotBlank() && !isOperationInProgress) {
+                                    onAdd(inputText)
+                                }
+                            },
+                        ),
                 )
 
                 Button(
@@ -146,13 +151,14 @@ fun AddStringForm(
                         }
                     },
                     enabled = inputText.isNotBlank() && !isOperationInProgress,
-                    modifier = Modifier.testTag("addButton")
+                    modifier = Modifier.testTag("addButton"),
                 ) {
                     Text(
                         text = stringResource(R.string.add),
-                        modifier = Modifier.semantics {
-                            contentDescription = addDescription
-                        }
+                        modifier =
+                            Modifier.semantics {
+                                contentDescription = addDescription
+                            },
                     )
                 }
             }
@@ -170,24 +176,24 @@ fun StringListSection(
     onEditSave: (Int) -> Unit,
     onEditCancel: () -> Unit,
     onEditTextChange: (String) -> Unit,
-    onDelete: (StringEntity) -> Unit
+    onDelete: (StringEntity) -> Unit,
 ) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = stringResource(R.string.string_list_title, strings.size),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
 
                 if (strings.isNotEmpty()) {
                     TextButton(
                         onClick = onDeleteAll,
-                        modifier = Modifier.testTag("deleteAllButton")
+                        modifier = Modifier.testTag("deleteAllButton"),
                     ) {
                         Text(stringResource(R.string.delete_all))
                     }
@@ -200,7 +206,7 @@ fun StringListSection(
                 Text(
                     text = stringResource(R.string.empty_strings_message),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 )
             } else {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -213,7 +219,7 @@ fun StringListSection(
                             onEditSave = onEditSave,
                             onEditCancel = onEditCancel,
                             onEditTextChange = onEditTextChange,
-                            onDelete = onDelete
+                            onDelete = onDelete,
                         )
                     }
                 }
@@ -225,7 +231,7 @@ fun StringListSection(
 @Composable
 fun DeleteAllConfirmationDialog(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -240,7 +246,7 @@ fun DeleteAllConfirmationDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
-        }
+        },
     )
 }
 
@@ -248,7 +254,7 @@ fun DeleteAllConfirmationDialog(
 fun DeleteStringConfirmationDialog(
     target: StringEntity,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -263,7 +269,7 @@ fun DeleteStringConfirmationDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
-        }
+        },
     )
 }
 
@@ -279,20 +285,21 @@ fun StringListItem(
     onEditSave: (Int) -> Unit,
     onEditCancel: () -> Unit,
     onEditTextChange: (String) -> Unit,
-    onDelete: (StringEntity) -> Unit
+    onDelete: (StringEntity) -> Unit,
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
     ) {
         val editDescription = stringResource(R.string.edit_content_description)
         val deleteDescription = stringResource(R.string.delete_content_description)
         if (editingId == stringEntity.id) {
             Column(
                 modifier = Modifier.padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 OutlinedTextField(
                     value = editText,
@@ -302,23 +309,24 @@ fun StringListItem(
                         Text(stringResource(R.string.character_count, editText.length))
                     },
                     isError = editText.isBlank(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("editInput")
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .testTag("editInput"),
                 )
 
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(
                         onClick = { onEditSave(stringEntity.id) },
                         enabled = editText.isNotBlank(),
-                        modifier = Modifier.testTag("saveButton")
+                        modifier = Modifier.testTag("saveButton"),
                     ) {
                         Text(stringResource(R.string.save))
                     }
 
                     OutlinedButton(
                         onClick = onEditCancel,
-                        modifier = Modifier.testTag("cancelButton")
+                        modifier = Modifier.testTag("cancelButton"),
                     ) {
                         Text(stringResource(R.string.cancel))
                     }
@@ -326,46 +334,49 @@ fun StringListItem(
             }
         } else {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringEntity.value,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                     Text(
                         text = "ID: ${stringEntity.id}",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     )
                 }
 
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     TextButton(
                         onClick = { onEditStart(stringEntity.id, stringEntity.value) },
-                        modifier = Modifier.testTag("editButton")
+                        modifier = Modifier.testTag("editButton"),
                     ) {
                         Text(
                             text = stringResource(R.string.edit),
-                            modifier = Modifier.semantics {
-                                contentDescription = editDescription
-                            }
+                            modifier =
+                                Modifier.semantics {
+                                    contentDescription = editDescription
+                                },
                         )
                     }
 
                     TextButton(
                         onClick = { onDelete(stringEntity) },
-                        modifier = Modifier.testTag("deleteButton")
+                        modifier = Modifier.testTag("deleteButton"),
                     ) {
                         Text(
                             text = stringResource(R.string.delete),
-                            modifier = Modifier.semantics {
-                                contentDescription = deleteDescription
-                            }
+                            modifier =
+                                Modifier.semantics {
+                                    contentDescription = deleteDescription
+                                },
                         )
                     }
                 }

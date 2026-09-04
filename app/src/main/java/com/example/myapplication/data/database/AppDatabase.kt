@@ -37,10 +37,9 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [StringEntity::class],
     version = 1,
-    exportSchema = true
+    exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {
-
     /**
      * StringDaoへのアクセスを提供する抽象メソッド
      *
@@ -88,18 +87,19 @@ abstract class AppDatabase : RoomDatabase() {
          */
         fun getDatabase(
             context: Context,
-            scope: CoroutineScope
+            scope: CoroutineScope,
         ): AppDatabase {
             // 既存のインスタンスがあればそれを返す（パフォーマンス向上）
             return INSTANCE ?: synchronized(this) {
                 // Roomデータベースビルダーでインスタンスを作成
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,    // アプリケーションコンテキスト
-                    AppDatabase::class.java,       // データベースクラス
-                    "app_database"                 // データベースファイル名
-                )
-                    .addCallback(AppDatabaseCallback(scope))  // 初期化コールバック追加
-                    .build()
+                val instance =
+                    Room
+                        .databaseBuilder(
+                            context.applicationContext, // アプリケーションコンテキスト
+                            AppDatabase::class.java, // データベースクラス
+                            "app_database", // データベースファイル名
+                        ).addCallback(AppDatabaseCallback(scope)) // 初期化コールバック追加
+                        .build()
 
                 // 作成したインスタンスをキャッシュして返す
                 INSTANCE = instance
@@ -124,9 +124,8 @@ abstract class AppDatabase : RoomDatabase() {
      *                 データベース初期化時のバックグラウンド処理に使用
      */
     private class AppDatabaseCallback(
-        private val scope: CoroutineScope
+        private val scope: CoroutineScope,
     ) : Callback() {
-
         /**
          * データベースが作成されたときに呼び出されるメソッド
          *

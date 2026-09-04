@@ -41,7 +41,6 @@ annotation class ApplicationScope
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     /**
      * アプリケーションスコープのCoroutineScopeをシングルトンで提供
      *
@@ -56,9 +55,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     @ApplicationScope
-    fun provideApplicationScope(): CoroutineScope {
-        return CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    }
+    fun provideApplicationScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     /**
      * メインのアプリケーションデータベースインスタンスを提供
@@ -76,10 +73,8 @@ object DatabaseModule {
     @Singleton
     fun provideAppDatabase(
         @ApplicationContext context: Context,
-        @ApplicationScope scope: CoroutineScope
-    ): AppDatabase {
-        return AppDatabase.getDatabase(context, scope)
-    }
+        @ApplicationScope scope: CoroutineScope,
+    ): AppDatabase = AppDatabase.getDatabase(context, scope)
 
     /**
      * StringDaoの実装を提供
@@ -90,9 +85,7 @@ object DatabaseModule {
      * @return Roomが生成したStringDao実装
      */
     @Provides
-    fun provideStringDao(database: AppDatabase): StringDao {
-        return database.stringDao()
-    }
+    fun provideStringDao(database: AppDatabase): StringDao = database.stringDao()
 
     /**
      * StringRepositoryインスタンスを提供
@@ -104,9 +97,7 @@ object DatabaseModule {
      * @return データアクセス用のStringRepository
      */
     @Provides
-    fun provideStringRepository(stringDao: StringDao): StringRepository {
-        return RoomStringRepository(stringDao)
-    }
+    fun provideStringRepository(stringDao: StringDao): StringRepository = RoomStringRepository(stringDao)
 
     @Provides
     @Singleton

@@ -1,13 +1,13 @@
 package com.example.myapplication
 
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.components.StringListItem
@@ -33,7 +33,7 @@ class MainActivityUiTest {
                     onEditSave = {},
                     onEditCancel = {},
                     onEditTextChange = {},
-                    onDelete = {}
+                    onDelete = {},
                 )
             }
         }
@@ -56,7 +56,7 @@ class MainActivityUiTest {
                     onEditSave = {},
                     onEditCancel = { editingId = null },
                     onEditTextChange = {},
-                    onDelete = {}
+                    onDelete = {},
                 )
             }
         }

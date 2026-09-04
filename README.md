@@ -79,8 +79,14 @@ chmod +x gradlew
 
 ### 3. 開発用のタスク
 ```bash
+# Kotlinコードを自動整形
+./gradlew format
+
 # Lintチェック
 ./gradlew lintDebug
+
+# Kotlinフォーマット検査と静的解析
+./gradlew ktlintCheck detekt
 
 # ユニットテスト実行
 ./gradlew testDebugUnitTest
@@ -92,9 +98,11 @@ chmod +x gradlew
 Windowsでは、同等のタスクを次のように実行します。
 
 ```powershell
+.\gradlew.bat format
 .\gradlew.bat assembleDebug
 .\gradlew.bat testDebugUnitTest
 .\gradlew.bat lintDebug
+.\gradlew.bat ktlintCheck detekt
 ```
 
 Pull Requestでは、GitHub Dependency Reviewが依存関係の変更を検査し、

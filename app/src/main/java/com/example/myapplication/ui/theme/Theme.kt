@@ -19,11 +19,12 @@ import androidx.compose.ui.platform.LocalContext
  * ダークモードでは明るい色をメインに使用することで、
  * 暗い背景とのコントラストを確保し、視認性を向上させます。
  */
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
+private val DarkColorScheme =
+    darkColorScheme(
+        primary = Purple80,
+        secondary = PurpleGrey80,
+        tertiary = Pink80,
+    )
 
 /**
  * ライトテーマ用のカラースキーム
@@ -34,16 +35,16 @@ private val DarkColorScheme = darkColorScheme(
  * ライトモードでは暗い色をメインに使用することで、
  * 明るい背景とのコントラストを確保し、読みやすさを向上させます。
  */
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* 
+private val LightColorScheme =
+    lightColorScheme(
+        primary = Purple40,
+        secondary = PurpleGrey40,
+        tertiary = Pink40,
+    /*
      * その他のデフォルトカラーのカスタマイズ例（コメントアウト済み）
-     * 
+     *
      * 必要に応じてこれらの色をカスタマイズできます：
-     * 
+     *
      * background = Color(0xFFFFFBFE),     // 背景色
      * surface = Color(0xFFFFFBFE),        // サーフェス色
      * onPrimary = Color.White,            // プライマリ色の上のテキスト色
@@ -52,7 +53,7 @@ private val LightColorScheme = lightColorScheme(
      * onBackground = Color(0xFF1C1B1F),   // 背景の上のテキスト色
      * onSurface = Color(0xFF1C1B1F),      // サーフェスの上のテキスト色
      */
-)
+    )
 
 /**
  * アプリケーションのメインテーマ関数
@@ -81,27 +82,28 @@ fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color は Android 12以降で利用可能
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     // 使用するカラースキームを決定
-    val colorScheme = when {
-        // Dynamic Colorが有効かつAndroid 12以降の場合
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            // システムから動的に色を取得
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colorScheme =
+        when {
+            // Dynamic Colorが有効かつAndroid 12以降の場合
+            dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                val context = LocalContext.current
+                // システムから動的に色を取得
+                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            }
 
-        // ダークテーマの場合
-        darkTheme -> DarkColorScheme
-        // ライトテーマの場合
-        else -> LightColorScheme
-    }
+            // ダークテーマの場合
+            darkTheme -> DarkColorScheme
+            // ライトテーマの場合
+            else -> LightColorScheme
+        }
 
     // Material Themeを適用
     MaterialTheme(
-        colorScheme = colorScheme,    // カラースキーム
-        typography = Typography,      // タイポグラフィ
-        content = content            // UIコンテンツ
+        colorScheme = colorScheme, // カラースキーム
+        typography = Typography, // タイポグラフィ
+        content = content, // UIコンテンツ
     )
 }

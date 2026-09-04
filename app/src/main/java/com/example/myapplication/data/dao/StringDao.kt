@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface StringDao {
-
     /**
      * すべての文字列エンティティを取得する
      *
