@@ -14,7 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.myapplication.ui.MainScreen
-import com.example.myapplication.ui.components.ThemeToggle
+import com.example.myapplication.ui.components.themeToggle
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
-                        ThemeToggle(
+                        themeToggle(
                             darkTheme = darkTheme,
                             onToggle = { darkTheme = it },
                         )

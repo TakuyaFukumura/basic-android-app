@@ -37,7 +37,7 @@ import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.viewmodel.MainError
 
 @Composable
-fun ThemeToggle(
+fun themeToggle(
     darkTheme: Boolean,
     onToggle: (Boolean) -> Unit,
 ) {

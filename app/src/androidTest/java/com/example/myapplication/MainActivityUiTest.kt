@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.components.StringListItem
-import com.example.myapplication.ui.components.ThemeToggle
+import com.example.myapplication.ui.components.themeToggle
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import org.junit.Rule
 import org.junit.Test
@@ -72,7 +72,7 @@ class MainActivityUiTest {
         var darkTheme by mutableStateOf(false)
         composeRule.setContent {
             MyApplicationTheme(darkTheme = darkTheme) {
-                ThemeToggle(
+                themeToggle(
                     darkTheme = darkTheme,
                     onToggle = { darkTheme = it },
                 )
