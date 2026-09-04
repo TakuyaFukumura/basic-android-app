@@ -21,9 +21,11 @@ class StringDaoTest {
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
+        database =
+            Room
+                .inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+                .allowMainThreadQueries()
+                .build()
     }
 
     @After
@@ -32,20 +34,22 @@ class StringDaoTest {
     }
 
     @Test
-    fun crudOperations_updateObservedRows() = runBlocking {
-        val dao = database.stringDao()
-        dao.insertString(StringEntity(value = "first"))
-        val inserted = dao.getAllStrings().first().single()
+    fun crudOperations_updateObservedRows() =
+        runBlocking {
+            val dao = database.stringDao()
+            dao.insertString(StringEntity(value = "first"))
+            val inserted = dao.getAllStrings().first().single()
 
-        dao.updateString(inserted.copy(value = "updated"))
-        assertEquals("updated", dao.getFirstString()?.value)
+            dao.updateString(inserted.copy(value = "updated"))
+            assertEquals("updated", dao.getFirstString()?.value)
 
-        assertEquals(1, dao.deleteStringById(inserted.id))
-        assertEquals(emptyList<StringEntity>(), dao.getAllStrings().first())
-    }
+            assertEquals(1, dao.deleteStringById(inserted.id))
+            assertEquals(emptyList<StringEntity>(), dao.getAllStrings().first())
+        }
 
     @Test
-    fun deletingMissingId_returnsZero() = runBlocking {
-        assertEquals(0, database.stringDao().deleteStringById(999))
-    }
+    fun deletingMissingId_returnsZero() =
+        runBlocking {
+            assertEquals(0, database.stringDao().deleteStringById(999))
+        }
 }

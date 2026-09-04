@@ -2,7 +2,7 @@ package com.example.myapplication.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-/**
+/*
  * アプリケーションのカラーパレット定義
  *
  * Material Design 3のライト/ダークテーマで使用される色を定義しています。

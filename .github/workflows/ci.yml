@@ -72,8 +72,8 @@ jobs:
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
       
       # 1回のGradle実行で設定・依存関係の解決を共有する
-      - name: Lint、単体テスト、デバッグビルドを実行
-        run: ./gradlew lintDebug testDebugUnitTest assembleDebug --build-cache --parallel
+      - name: フォーマット検査、静的解析、Lint、単体テスト、デバッグビルドを実行
+        run: ./gradlew ktlintCheck detekt lintDebug testDebugUnitTest assembleDebug --build-cache --parallel
       
       - name: APKファイルを保存
         uses: actions/upload-artifact@v4

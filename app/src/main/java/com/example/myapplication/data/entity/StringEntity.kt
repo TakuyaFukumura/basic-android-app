@@ -36,5 +36,5 @@ import androidx.room.PrimaryKey
 data class StringEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val value: String
+    val value: String,
 )

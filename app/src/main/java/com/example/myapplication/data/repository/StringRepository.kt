@@ -29,16 +29,23 @@ import kotlinx.coroutines.flow.Flow
  */
 interface StringRepository {
     fun getAllStrings(): Flow<List<StringEntity>>
+
     suspend fun getFirstString(): StringEntity?
+
     suspend fun insertString(string: StringEntity)
+
     suspend fun updateString(string: StringEntity)
+
     suspend fun deleteString(string: StringEntity)
+
     suspend fun deleteStringById(id: Int): Int
+
     suspend fun deleteAllStrings()
 }
 
-class RoomStringRepository(private val stringDao: StringDao) : StringRepository {
-
+class RoomStringRepository(
+    private val stringDao: StringDao,
+) : StringRepository {
     /**
      * すべての文字列エンティティを取得する
      *

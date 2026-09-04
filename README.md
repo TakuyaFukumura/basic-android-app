@@ -4,7 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
-[![Version](https://img.shields.io/badge/Version-0.10.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![Version](https://img.shields.io/badge/Version-0.10.1-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
 
 KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。文字列データベース管理機能を持つCRUDアプリケーションのサンプルです。
 
@@ -79,8 +79,14 @@ chmod +x gradlew
 
 ### 3. 開発用のタスク
 ```bash
+# Kotlinコードを自動整形
+./gradlew format
+
 # Lintチェック
 ./gradlew lintDebug
+
+# Kotlinフォーマット検査と静的解析
+./gradlew ktlintCheck detekt
 
 # ユニットテスト実行
 ./gradlew testDebugUnitTest
@@ -92,9 +98,11 @@ chmod +x gradlew
 Windowsでは、同等のタスクを次のように実行します。
 
 ```powershell
+.\gradlew.bat format
 .\gradlew.bat assembleDebug
 .\gradlew.bat testDebugUnitTest
 .\gradlew.bat lintDebug
+.\gradlew.bat ktlintCheck detekt
 ```
 
 Pull Requestでは、GitHub Dependency Reviewが依存関係の変更を検査し、
@@ -170,6 +178,7 @@ app/src/main/java/com/example/myapplication/
 
 ## バージョン履歴
 
+- **v0.10.1**: Kotlinフォーマットと静的解析をCI品質ゲートへ追加
 - **v0.10.0**: Dependency Reviewによる脆弱性検出と依存関係更新時のCI検証を追加
 - **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.20への更新
 - **v0.8.0**: 型付きUI状態、Repository抽象化、ViewModelテスト、CI品質ゲートを追加

@@ -6,6 +6,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+// Material Design のタイポグラフィスタイルセット
+
 /**
  * アプリケーションのタイポグラフィ設定
  *
@@ -19,33 +21,34 @@ import androidx.compose.ui.unit.sp
  * カスタマイズされたスタイル:
  * - bodyLarge: 本文用の基本テキストスタイル
  */
-// Material Design のタイポグラフィスタイルセット
-val Typography = Typography(
-    /**
-     * 本文用の大きなテキストスタイル
-     *
-     * アプリのメインコンテンツや長い文章で使用されます。
-     * 読みやすさを重視した設定になっています。
-     *
-     * 設定詳細:
-     * - フォントファミリー: システムデフォルト
-     * - フォントウェイト: Normal（400）
-     * - フォントサイズ: 16sp
-     * - 行の高さ: 24sp
-     * - 文字間隔: 0.5sp
-     */
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* 
+val Typography =
+    Typography(
+        /**
+         * 本文用の大きなテキストスタイル
+         *
+         * アプリのメインコンテンツや長い文章で使用されます。
+         * 読みやすさを重視した設定になっています。
+         *
+         * 設定詳細:
+         * - フォントファミリー: システムデフォルト
+         * - フォントウェイト: Normal（400）
+         * - フォントサイズ: 16sp
+         * - 行の高さ: 24sp
+         * - 文字間隔: 0.5sp
+         */
+        bodyLarge =
+            TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                letterSpacing = 0.5.sp,
+            ),
+    /*
      * その他のデフォルトテキストスタイルの例（コメントアウト済み）
-     * 
+     *
      * 必要に応じてこれらのスタイルをカスタマイズできます：
-     * 
+     *
      * titleLarge = TextStyle(
      *     fontFamily = FontFamily.Default,
      *     fontWeight = FontWeight.Normal,
@@ -61,4 +64,4 @@ val Typography = Typography(
      *     letterSpacing = 0.5.sp
      * )
      */
-)
+    )

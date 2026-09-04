@@ -37,12 +37,13 @@ import com.example.myapplication.ui.viewmodel.MainViewModel
 fun MainScreen(modifier: Modifier = Modifier) {
     val viewModel: MainViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val operationStatus = uiState.operationMessage ?: when (uiState.error) {
-        MainError.LOAD_FAILED -> stringResource(R.string.load_error_message)
-        MainError.OPERATION_FAILED -> stringResource(R.string.operation_error_message)
-        MainError.INPUT_BLANK -> stringResource(R.string.input_blank_error)
-        null -> ""
-    }
+    val operationStatus =
+        uiState.operationMessage ?: when (uiState.error) {
+            MainError.LOAD_FAILED -> stringResource(R.string.load_error_message)
+            MainError.OPERATION_FAILED -> stringResource(R.string.operation_error_message)
+            MainError.INPUT_BLANK -> stringResource(R.string.input_blank_error)
+            null -> ""
+        }
 
     var inputText by remember { mutableStateOf("") }
     var editingId by remember { mutableStateOf<Int?>(null) }
@@ -56,17 +57,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         GreetingCard(name = uiState.greeting)
 
         MainOperationStatus(
             status = operationStatus,
             error = uiState.error,
-            onRetry = viewModel::retryLoading
+            onRetry = viewModel::retryLoading,
         )
 
         AddStringForm(
@@ -76,7 +78,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             onAdd = { value ->
                 viewModel.addString(value)
                 inputText = ""
-            }
+            },
         )
 
         StringListSection(
@@ -98,7 +100,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 editText = ""
             },
             onEditTextChange = { editText = it },
-            onDelete = { entity -> deleteTarget = entity }
+            onDelete = { entity -> deleteTarget = entity },
         )
 
         if (showDeleteAllConfirmation) {
@@ -107,7 +109,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 onConfirm = {
                     showDeleteAllConfirmation = false
                     viewModel.deleteAllStrings()
-                }
+                },
             )
         }
 
@@ -118,7 +120,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 onConfirm = {
                     viewModel.deleteString(target.id)
                     deleteTarget = null
-                }
+                },
             )
         }
     }
@@ -128,10 +130,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
  * 挨拶メッセージを表示するComposable関数。
  */
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(
+    name: String,
+    modifier: Modifier = Modifier,
+) {
     androidx.compose.material3.Text(
         text = stringResource(R.string.greeting_format, name),
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
