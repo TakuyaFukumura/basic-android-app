@@ -85,6 +85,9 @@ interface StringDao {
     @Insert
     suspend fun insertString(string: StringEntity)
 
+    @Query("SELECT COUNT(*) FROM strings")
+    suspend fun countStrings(): Int
+
     /**
      * 文字列エンティティを更新する
      *

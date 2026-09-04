@@ -154,11 +154,9 @@ abstract class AppDatabase : RoomDatabase() {
                     // StringDaoを取得
                     val stringDao = database.stringDao()
 
-                    // 既存データを削除（クリーンな初期状態を保証）
-                    stringDao.deleteAllStrings()
-
-                    // 「world」文字列を挿入（メイン画面で表示される文字列）
-                    stringDao.insertString(StringEntity(value = "world"))
+                    if (stringDao.countStrings() == 0) {
+                        stringDao.insertString(StringEntity(value = "world"))
+                    }
                 }
             }
         }

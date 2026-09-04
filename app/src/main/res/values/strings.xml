@@ -19,4 +19,10 @@
     <string name="string_input_error">文字列を入力してください</string>
     <string name="edit_content_description">文字列を編集</string>
     <string name="delete_content_description">文字列を削除</string>
+    <string name="load_error_message">データの読み込みに失敗しました</string>
+    <string name="operation_error_message">データ操作に失敗しました</string>
+    <string name="retry">再試行</string>
+    <string name="input_blank_error">空の文字列は追加できません</string>
+    <string name="edit_blank_error">空の文字列には更新できません</string>
+    <string name="character_count">%1$d/100文字</string>
 </resources>
