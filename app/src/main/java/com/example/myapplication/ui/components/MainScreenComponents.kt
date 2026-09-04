@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -19,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -33,6 +35,35 @@ import androidx.compose.ui.unit.dp
 import com.example.myapplication.R
 import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.viewmodel.MainError
+
+@Composable
+fun themeToggle(
+    darkTheme: Boolean,
+    onToggle: (Boolean) -> Unit,
+) {
+    val toggleDescription = stringResource(R.string.dark_mode_toggle_content_description)
+
+    Row(
+        modifier =
+            Modifier
+                .statusBarsPadding()
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Switch(
+            checked = darkTheme,
+            onCheckedChange = onToggle,
+            modifier =
+                Modifier
+                    .testTag("darkModeToggle")
+                    .semantics {
+                        contentDescription = toggleDescription
+                    },
+        )
+    }
+}
 
 @Composable
 fun GreetingCard(name: String) {
