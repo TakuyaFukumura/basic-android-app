@@ -19,7 +19,6 @@
     <string name="string_input_error">文字列を入力してください</string>
     <string name="edit_content_description">文字列を編集</string>
     <string name="delete_content_description">文字列を削除</string>
-    <string name="dark_mode">ダークモード</string>
     <string name="dark_mode_toggle_content_description">ダークモードを切り替え</string>
     <string name="load_error_message">データの読み込みに失敗しました</string>
     <string name="operation_error_message">データ操作に失敗しました</string>

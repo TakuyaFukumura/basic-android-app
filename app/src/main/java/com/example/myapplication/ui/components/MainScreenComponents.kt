@@ -52,10 +52,6 @@ fun ThemeToggle(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            text = stringResource(R.string.dark_mode),
-            style = MaterialTheme.typography.labelLarge,
-        )
         Switch(
             checked = darkTheme,
             onCheckedChange = onToggle,
