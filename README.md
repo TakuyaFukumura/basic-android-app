@@ -4,7 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
-[![Version](https://img.shields.io/badge/Version-0.9.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![Version](https://img.shields.io/badge/Version-0.9.1-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
 
 KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。文字列データベース管理機能を持つCRUDアプリケーションのサンプルです。
 
@@ -167,6 +167,7 @@ app/src/main/java/com/example/myapplication/
 - **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.20への更新
 - **v0.8.0**: 型付きUI状態、Repository抽象化、ViewModelテスト、CI品質ゲートを追加
 - **v0.9.0**: 再試行可能なエラー表示、入力境界値、非破壊な初期データ投入、アクセシビリティ改善を追加
+- **v0.9.1**: MainScreenのComposableを責務ごとに分割し、UIテストの参照構成を整理
 - **v0.6.0**: Android Gradle Plugin 8.12.2への更新、依存関係最新化
 - **v0.5.0**: CI/CDワークフローの改善（gradle/actions/setup-gradle@v4導入）
 - **v0.3.0**: Roomデータベース統合、MVVM+Repository パターンの実装

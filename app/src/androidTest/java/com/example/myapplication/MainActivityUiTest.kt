@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.myapplication.data.entity.StringEntity
+import com.example.myapplication.ui.components.StringListItem
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import org.junit.Rule
 import org.junit.Test
