@@ -21,6 +21,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.myapplication.ui.viewmodel.MainError
 import com.example.myapplication.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -101,7 +102,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
     // StateFlowから各種状態を取得
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val stringList = uiState.strings
-    val operationStatus = uiState.operationMessage ?: uiState.errorMessage.orEmpty()
+    val operationStatus = uiState.operationMessage ?: when (uiState.error) {
+        MainError.LOAD_FAILED -> stringResource(R.string.load_error_message)
+        MainError.OPERATION_FAILED -> stringResource(R.string.operation_error_message)
+        MainError.INPUT_BLANK -> stringResource(R.string.input_blank_error)
+        null -> ""
+    }
     
     // 入力フィールドの状態管理
     var inputText by remember { mutableStateOf("") }
@@ -109,6 +115,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var editText by remember { mutableStateOf("") }
     var showDeleteAllConfirmation by remember { mutableStateOf(false) }
     var deleteTarget by remember { mutableStateOf<StringEntity?>(null) }
+    val addDescription = stringResource(R.string.add)
     
     // 操作ステータスの自動クリア（5秒後）
     LaunchedEffect(operationStatus.takeIf { it.isNotEmpty() }) {
@@ -148,16 +155,27 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = operationStatus,
+                Row(
                     modifier = Modifier.padding(12.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = if (uiState.errorMessage != null) {
-                        MaterialTheme.colorScheme.error
-                    } else {
-                        MaterialTheme.colorScheme.onPrimaryContainer
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = operationStatus,
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (uiState.error != null) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        }
+                    )
+                    if (uiState.error == MainError.LOAD_FAILED) {
+                        TextButton(onClick = viewModel::retryLoading) {
+                            Text(stringResource(R.string.retry))
+                        }
                     }
-                )
+                }
             }
         }
         
@@ -184,9 +202,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         onValueChange = { inputText = it.take(100) },
                         label = { Text(stringResource(R.string.string_input_label)) },
                         supportingText = {
-                            if (inputText.isNotEmpty() && inputText.isBlank()) {
-                                Text(stringResource(R.string.string_input_error))
-                            }
+                            Text(stringResource(R.string.character_count, inputText.length))
                         },
                         isError = inputText.isNotEmpty() && inputText.isBlank(),
                         singleLine = true,
@@ -217,7 +233,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         enabled = inputText.isNotBlank() && !uiState.isOperationInProgress,
                         modifier = Modifier.testTag("addButton")
                     ) {
-                        Text(stringResource(R.string.add))
+                        Text(stringResource(R.string.add), modifier = Modifier.semantics {
+                            contentDescription = addDescription
+                        })
                     }
                 }
             }
@@ -382,6 +400,10 @@ fun StringListItem(
                     value = editText,
                     onValueChange = { onEditTextChange(it.take(100)) },
                     label = { Text(stringResource(R.string.edit_string_label)) },
+                    supportingText = {
+                        Text(stringResource(R.string.character_count, editText.length))
+                    },
+                    isError = editText.isBlank(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .testTag("editInput")

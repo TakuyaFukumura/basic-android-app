@@ -4,6 +4,7 @@ import com.example.myapplication.data.entity.StringEntity
 import com.example.myapplication.data.repository.StringRepository
 import com.example.myapplication.di.ErrorLogger
 import com.example.myapplication.ui.viewmodel.MainViewModel
+import com.example.myapplication.ui.viewmodel.MainError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,7 +57,7 @@ class MainViewModelTest {
         advanceUntilIdle()
 
         assertTrue(repository.values.isEmpty())
-        assertEquals("空の文字列は追加できません", viewModel.uiState.value.operationMessage)
+        assertEquals(MainError.INPUT_BLANK, viewModel.uiState.value.error)
     }
 
     @Test
@@ -82,8 +83,19 @@ class MainViewModelTest {
 
         advanceUntilIdle()
 
-        assertEquals("データの読み込みに失敗しました", viewModel.uiState.value.errorMessage)
+        assertEquals(MainError.LOAD_FAILED, viewModel.uiState.value.error)
         assertFalse(viewModel.uiState.value.isLoading)
+    }
+
+    @Test
+    fun addString_rejectsValuesLongerThanAllowedBoundaryAfterTrim() = runTest {
+        val repository = FakeStringRepository()
+        val viewModel = MainViewModel(repository, FakeErrorLogger())
+
+        viewModel.addString("a".repeat(101))
+        advanceUntilIdle()
+
+        assertEquals(100, repository.values.single().value.length)
     }
 
     private class FakeErrorLogger : ErrorLogger {

@@ -13,13 +13,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class MainError {
+    LOAD_FAILED,
+    OPERATION_FAILED,
+    INPUT_BLANK
+}
+
 data class MainUiState(
     val greeting: String = "world",
     val strings: List<StringEntity> = emptyList(),
     val isLoading: Boolean = true,
     val isOperationInProgress: Boolean = false,
     val operationMessage: String? = null,
-    val errorMessage: String? = null
+    val error: MainError? = null
 )
 
 @HiltViewModel
@@ -29,6 +35,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     private companion object {
         const val TAG = "MainViewModel"
+        const val MAX_VALUE_LENGTH = 100
     }
 
     private val _uiState = MutableStateFlow(MainUiState())
@@ -46,7 +53,7 @@ class MainViewModel @Inject constructor(
                         strings = strings,
                         greeting = strings.firstOrNull()?.value ?: "world",
                         isLoading = false,
-                        errorMessage = null
+                        error = _uiState.value.error.takeUnless { it == MainError.LOAD_FAILED }
                     )
                 }
             } catch (exception: CancellationException) {
@@ -55,16 +62,16 @@ class MainViewModel @Inject constructor(
                 errorLogger.error(TAG, "Failed to observe strings", exception)
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    errorMessage = "データの読み込みに失敗しました"
+                    error = MainError.LOAD_FAILED
                 )
             }
         }
     }
 
     fun addString(value: String) {
-        val normalizedValue = value.trim()
+        val normalizedValue = value.trim().take(MAX_VALUE_LENGTH)
         if (normalizedValue.isEmpty()) {
-            setOperationMessage("空の文字列は追加できません")
+            setInputError()
             return
         }
         runOperation {
@@ -74,9 +81,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun updateString(id: Int, newValue: String) {
-        val normalizedValue = newValue.trim()
+        val normalizedValue = newValue.trim().take(MAX_VALUE_LENGTH)
         if (normalizedValue.isEmpty()) {
-            setOperationMessage("空の文字列には更新できません")
+            setInputError()
             return
         }
         runOperation {
@@ -103,11 +110,20 @@ class MainViewModel @Inject constructor(
     }
 
     fun clearOperationStatus() {
-        _uiState.value = _uiState.value.copy(operationMessage = null)
+        _uiState.value = _uiState.value.copy(operationMessage = null, error = null)
     }
 
-    private fun setOperationMessage(message: String) {
-        _uiState.value = _uiState.value.copy(operationMessage = message, errorMessage = null)
+    fun retryLoading() {
+        if (_uiState.value.isLoading) return
+        _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+        observeStrings()
+    }
+
+    private fun setInputError() {
+        _uiState.value = _uiState.value.copy(
+            operationMessage = null,
+            error = MainError.INPUT_BLANK
+        )
     }
 
     private fun runOperation(operation: suspend () -> String) {
@@ -116,7 +132,7 @@ class MainViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(
                 isOperationInProgress = true,
                 operationMessage = null,
-                errorMessage = null
+                error = null
             )
             try {
                 val message = operation()
@@ -130,7 +146,7 @@ class MainViewModel @Inject constructor(
                 errorLogger.error(TAG, "Database operation failed", exception)
                 _uiState.value = _uiState.value.copy(
                     isOperationInProgress = false,
-                    errorMessage = "データ操作に失敗しました"
+                    error = MainError.OPERATION_FAILED
                 )
             }
         }
