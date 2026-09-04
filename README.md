@@ -4,7 +4,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.20-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Target SDK](https://img.shields.io/badge/Target%20SDK-36-orange.svg?style=flat)](https://developer.android.com/studio/releases/platforms)
-[![Version](https://img.shields.io/badge/Version-0.9.1-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
+[![Version](https://img.shields.io/badge/Version-0.10.0-blue.svg?style=flat)](https://github.com/TakuyaFukumura/basic-android-app/releases)
 
 KotlinとJetpack Composeで構築されたモダンなAndroidアプリケーション。文字列データベース管理機能を持つCRUDアプリケーションのサンプルです。
 
@@ -97,6 +97,12 @@ Windowsでは、同等のタスクを次のように実行します。
 .\gradlew.bat lintDebug
 ```
 
+Pull Requestでは、GitHub Dependency Reviewが依存関係の変更を検査し、
+新規のHighまたはCritical脆弱性が検出された場合に失敗します。
+依存関係を更新したPull Requestでは、Dependency Reviewに加えて
+`lintDebug`、`testDebugUnitTest`、`assembleDebug`をCIで実行します。
+ライセンスは現時点で一律の拒否リストを設けず、採用ライセンスをレビューで確認します。
+
 ## テンプレートから派生アプリを作るときのチェックリスト
 
 1. `app/build.gradle.kts` の `namespace`、`applicationId`、`versionName`、`versionCode` を変更する
@@ -164,6 +170,7 @@ app/src/main/java/com/example/myapplication/
 
 ## バージョン履歴
 
+- **v0.10.0**: Dependency Reviewによる脆弱性検出と依存関係更新時のCI検証を追加
 - **v0.7.0**: Hilt依存関係注入の導入、CRUD機能の完全実装、Kotlin 2.2.20への更新
 - **v0.8.0**: 型付きUI状態、Repository抽象化、ViewModelテスト、CI品質ゲートを追加
 - **v0.9.0**: 再試行可能なエラー表示、入力境界値、非破壊な初期データ投入、アクセシビリティ改善を追加
