@@ -12,6 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -188,7 +191,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         isError = inputText.isNotEmpty() && inputText.isBlank(),
                         singleLine = true,
                         maxLines = 1,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("stringInput"),
                         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
                             imeAction = androidx.compose.ui.text.input.ImeAction.Done
                         ),
@@ -209,7 +214,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                                 inputText = ""
                             }
                         },
-                        enabled = inputText.isNotBlank() && !uiState.isOperationInProgress
+                        enabled = inputText.isNotBlank() && !uiState.isOperationInProgress,
+                        modifier = Modifier.testTag("addButton")
                     ) {
                         Text(stringResource(R.string.add))
                     }
@@ -236,7 +242,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     
                     if (stringList.isNotEmpty()) {
                         TextButton(
-                            onClick = { showDeleteAllConfirmation = true }
+                            onClick = { showDeleteAllConfirmation = true },
+                            modifier = Modifier.testTag("deleteAllButton")
                         ) {
                             Text(stringResource(R.string.delete_all))
                         }
@@ -363,6 +370,8 @@ fun StringListItem(
             containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
+        val editDescription = stringResource(R.string.edit_content_description)
+        val deleteDescription = stringResource(R.string.delete_content_description)
         if (editingId == stringEntity.id) {
             // 編集モード
             Column(
@@ -373,7 +382,9 @@ fun StringListItem(
                     value = editText,
                     onValueChange = { onEditTextChange(it.take(100)) },
                     label = { Text(stringResource(R.string.edit_string_label)) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("editInput")
                 )
                 
                 Row(
@@ -381,13 +392,15 @@ fun StringListItem(
                 ) {
                     Button(
                         onClick = { onEditSave(stringEntity.id) },
-                        enabled = editText.isNotBlank()
+                        enabled = editText.isNotBlank(),
+                        modifier = Modifier.testTag("saveButton")
                     ) {
                         Text(stringResource(R.string.save))
                     }
                     
                     OutlinedButton(
-                        onClick = onEditCancel
+                        onClick = onEditCancel,
+                        modifier = Modifier.testTag("cancelButton")
                     ) {
                         Text(stringResource(R.string.cancel))
                     }
@@ -420,15 +433,27 @@ fun StringListItem(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     TextButton(
-                        onClick = { onEditStart(stringEntity.id, stringEntity.value) }
+                        onClick = { onEditStart(stringEntity.id, stringEntity.value) },
+                        modifier = Modifier.testTag("editButton")
                     ) {
-                        Text(stringResource(R.string.edit))
+                        Text(
+                            text = stringResource(R.string.edit),
+                            modifier = Modifier.semantics {
+                                contentDescription = editDescription
+                            }
+                        )
                     }
                     
                     TextButton(
-                        onClick = { onDelete(stringEntity) }
+                        onClick = { onDelete(stringEntity) },
+                        modifier = Modifier.testTag("deleteButton")
                     ) {
-                        Text(stringResource(R.string.delete))
+                        Text(
+                            text = stringResource(R.string.delete),
+                            modifier = Modifier.semantics {
+                                contentDescription = deleteDescription
+                            }
+                        )
                     }
                 }
             }
