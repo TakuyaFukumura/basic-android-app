@@ -11,7 +11,25 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
+      - 'gradle/**'
+      - '**/*.gradle.kts'
+      - '**/*.properties'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'settings.gradle.kts'
+      - '.github/workflows/ci.yml'
   pull_request:
+    paths:
+      - 'app/**'
+      - 'gradle/**'
+      - '**/*.gradle.kts'
+      - '**/*.properties'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'settings.gradle.kts'
+      - '.github/workflows/ci.yml'
   workflow_dispatch:
 
 # 並行実行の制御
@@ -53,21 +71,9 @@ jobs:
       - name: Android SDKライセンスを受諾
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
       
-      # 依存関係のダウンロード
-      - name: 依存関係をダウンロード
-        run: ./gradlew dependencies --no-daemon
-      
-      # Lintチェック
-      - name: Lintチェックを実行
-        run: ./gradlew lintDebug --no-daemon
-      
-      # 単体テスト実行
-      - name: 単体テストを実行
-        run: ./gradlew testDebugUnitTest --no-daemon
-      
-      # デバッグビルド
-      - name: デバッグビルドを作成
-        run: ./gradlew assembleDebug --no-daemon
+      # 1回のGradle実行で設定・依存関係の解決を共有する
+      - name: Lint、単体テスト、デバッグビルドを実行
+        run: ./gradlew lintDebug testDebugUnitTest assembleDebug --build-cache --parallel
       
       - name: APKファイルを保存
         uses: actions/upload-artifact@v4
